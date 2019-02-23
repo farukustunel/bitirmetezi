@@ -4,6 +4,5 @@ ipykernel
 nbsphinx
 matplotlib
 plotly
-pyplot
 biopython
 gzip
