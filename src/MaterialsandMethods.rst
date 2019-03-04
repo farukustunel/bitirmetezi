@@ -675,6 +675,9 @@ Finding Coverage
 
 **Calculating Depth and Coverage from a BAM file**
 
+The first column of output file is reference id. The following columns are respectively called depth number, number of bases
+with given depth, reference length and percentage of coverage with given depth.
+
 .. code:: bash
    
    genomeCoverageBed -ibam F5-plasmid1.bam -g F5-plasmid1.txt > F5-plasmid1coverage.txt
@@ -689,6 +692,10 @@ Finding Coverage
 
 
 **Calculating Breadth of Coverage and choosing best candidates for assembly**
+
+If second column equals number zero, it means that 0 depth or unmapped regions occur for reference. We can easily calcutate
+the breadth of coverage with 1-$5 condition which means that summary of percentage of all depth but 0. Then we can determine
+the best candidates for each plasmids.  
 
 .. code:: bash
    
