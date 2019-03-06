@@ -10,9 +10,9 @@ Data
 
 • Used in this analysis.
 
-Reference plasmids can be obtain from 'Refseq Database'_.
+Reference plasmids can be obtain from 'Refseq Database'__.
 
-.. _Refseq Database: ftp://ftp.ncbi.nlm.nih.gov/refseq/release/plasmid>
+.. _Refseq Database: ftp://ftp.ncbi.nlm.nih.gov/refseq/release/plasmid
 
 • The name of the files are:
 
