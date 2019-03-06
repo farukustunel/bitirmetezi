@@ -1,7 +1,7 @@
 ====
 Data
 ====
-*Terje Stanium's* plasmids which are called:
+• *Terje Stanium's* plasmids which are called:
 
 1. 1-F5-96_S1_L001_R1_001.fastq.gz  > Library **F5**, *Forward*
 2. 1-F5-96_S1_L001_R2_001.fastq.gz  > Library **F5**, *Reverse*
@@ -10,7 +10,7 @@ Data
 
 • Used in this analysis.
 
-Reference plasmids can be obtain from `Refseq Database`_.
+• Reference plasmids can be obtain from `Refseq Database`_.
 
 .. _Refseq Database: https://ftp.ncbi.nlm.nih.gov/refseq/release/plasmid
 
@@ -28,8 +28,7 @@ Reference plasmids can be obtain from `Refseq Database`_.
 Protocols
 =========
 
-• We compare the each libraries with references by using Burrows-Wheeler Aligner command line tool.This tool contains different
-aligners with different algorithms.Two of them are Bwa-mem and Bwa-aln.
+• We compare the each libraries with references by using Burrows-Wheeler Aligner command line tool.This tool contains different aligners with different algorithms.Two of them are Bwa-mem and Bwa-aln.
 
 -------
 Bwa-mem
