@@ -93,9 +93,9 @@ F20-Plasmid1
    samtools idxstats F20-plasmid1.bam |awk '$3>1000'|sort -k3n > F20-plasmid1.stats 
 
 
-^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^
 F20-Other Plasmids
-^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^
 
 • **Indexing reference, aligning Library F20 and other plasmids.**
 
