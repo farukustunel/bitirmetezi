@@ -429,7 +429,7 @@ Creating new fastq files with given read id's
 • This python script creates new fastq files with given forward read id's.
 
 .. code-block:: python
-	:linesos:
+   :linesos:
 
 	from Bio import SeqIO
 
@@ -448,7 +448,7 @@ Creating new fastq files with given read id's
 • This python script creates new fastq files with given reverse read id's.
 
 .. code-block:: python
-	:linesos:
+   :linesos:
 
 	from Bio import SeqIO
 
@@ -480,7 +480,7 @@ Filtering reads with given contigs
 • After the assembly process we have ace files for each contig. Some regions in the contigs have lower depth for reference bases. We do not want those reads and we should delete them. The following python script will do the work.
 
 .. code-block:: python
-	:lineos:
+   :lineos:
 
 	#!/usr/bin/python
 	# coding: utf-8
