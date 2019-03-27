@@ -65,7 +65,7 @@ language = None
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints']
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'colorful'
+pygments_style = 'vim'
 
 
 # -- Options for HTML output -------------------------------------------------
