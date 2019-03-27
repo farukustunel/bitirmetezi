@@ -319,7 +319,6 @@ with given depth, reference length and percentage of coverage with given depth.
    genomeCoverageBed -ibam F20-plasmid{number}.bam -g F20-plasmid{number}.txt > F20-plasmid{number}coverage.txt
 
 
-
 **Calculating Breadth of Coverage and choosing best candidates for assembly**
 
 • If second column equals number zero, it means that 0 depth or unmapped regions occur for reference. We can easily calcutate
@@ -366,18 +365,18 @@ F5-Best candidates
 .. code:: bash
 
     bwa index NC_025138.1.fasta
-	bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' NC_025138.1.fasta 1-F5-96_S1_L001_R1_001.fastq.gz 1-F5-96_S1_L001_R2_001.fastq.gz > F5-NC_025138.1.sam
-	samtools fixmate -O bam F5-NC_025138.1.sam F5-NC_025138.1fixmate.bam
-	samtools sort -O bam -o F5-NC_025138.1fixmatesorted.bam F5-NC_025138.1fixmate.bam
+    bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' NC_025138.1.fasta 1-F5-96_S1_L001_R1_001.fastq.gz 1-F5-96_S1_L001_R2_001.fastq.gz > F5-NC_025138.1.sam
+    samtools fixmate -O bam F5-NC_025138.1.sam F5-NC_025138.1fixmate.bam
+    samtools sort -O bam -o F5-NC_025138.1fixmatesorted.bam F5-NC_025138.1fixmate.bam
 
 • We can generalize the code like this;
 
 .. code:: bash
 
-	bwa index {plasmid accession}.fasta
-	bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' {plasmid accession}.fasta 1-F5-96_S1_L001_R1_001.fastq.gz 1-F5-96_S1_L001_R2_001.fastq.gz > F5-{plasmid accession}.sam
-	samtools fixmate -O bam F5-{plasmid accession}.sam F5-{plasmid accession}fixmate.bam
-	samtools sort -O bam -o F5-{plasmid accession}fixmatesorted.bam F5-{plasmid accession}fixmate.bam
+    bwa index {plasmid accession}.fasta
+    bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' {plasmid accession}.fasta 1-F5-96_S1_L001_R1_001.fastq.gz 1-F5-96_S1_L001_R2_001.fastq.gz > F5-{plasmid accession}.sam
+    samtools fixmate -O bam F5-{plasmid accession}.sam F5-{plasmid accession}fixmate.bam
+    samtools sort -O bam -o F5-{plasmid accession}fixmatesorted.bam F5-{plasmid accession}fixmate.bam
 
 
 -------------------
@@ -389,18 +388,18 @@ F20-Best candidates
 .. code:: bash
 
     bwa index NC_025138.1.fasta
-	bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' NC_025138.1.fasta 4-F20-96_S2_L001_R1_001.fastq.gz 4-F20-96_S2_L001_R2_001.fastq.gz > F20-NC_025138.1.sam
-	samtools fixmate -O bam F20-NC_025138.1.sam F20-NC_025138.1fixmate.bam
-	samtools sort -O bam -o F20-NC_025138.1fixmatesorted.bam F20-NC_025138.1fixmate.bam
+    bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' NC_025138.1.fasta 4-F20-96_S2_L001_R1_001.fastq.gz 4-F20-96_S2_L001_R2_001.fastq.gz > F20-NC_025138.1.sam
+    samtools fixmate -O bam F20-NC_025138.1.sam F20-NC_025138.1fixmate.bam
+    samtools sort -O bam -o F20-NC_025138.1fixmatesorted.bam F20-NC_025138.1fixmate.bam
 
 • We can generalize the code like this;
 
 .. code:: bash
 
-	bwa index {plasmid accession}.fasta
-	bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' {plasmid accession}.fasta 4-F20-96_S2_L001_R1_001.fastq.gz 4-F20-96_S2_L001_R2_001.fastq.gz > F20-{plasmid accession}.sam
-	samtools fixmate -O bam F20-{plasmid accession}.sam F20-{plasmid accession}fixmate.bam
-	samtools sort -O bam -o F20-{plasmid accession}fixmatesorted.bam F20-{plasmid accession}fixmate.bam
+    bwa index {plasmid accession}.fasta
+    bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' {plasmid accession}.fasta 4-F20-96_S2_L001_R1_001.fastq.gz 4-F20-96_S2_L001_R2_001.fastq.gz > F20-{plasmid accession}.sam
+    samtools fixmate -O bam F20-{plasmid accession}.sam F20-{plasmid accession}fixmate.bam
+    samtools sort -O bam -o F20-{plasmid accession}fixmatesorted.bam F20-{plasmid accession}fixmate.bam
 
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -428,27 +427,26 @@ Creating new fastq files with given read id's
 
 • This python script creates new fastq files with given forward read id's.
 
-.. code-block:: python
-   :linesos:
+.. code:: python
 
-	from Bio import SeqIO
 
-	input_file = "{Forward fastq file}"
-	id_file = "{Library}-{plasmid accession}fastqid.txt"
-	output_file = "{Library}-{plasmid accession}.fastq"
-	wanted = set(line.rstrip("\n").split(None, 1)[0] for line in open(id_file))
-	print("Found %i unique identifiers in %s" % (len(wanted), id_file))
-	records = (r for r in SeqIO.parse(input_file, "fastq") if r.id in wanted)
-	count = SeqIO.write(records, output_file, "fastq")
-	print("Saved %i records from %s to %s" % (count, input_file, output_file))
-	if count < len(wanted):
-    	print("Warning %i IDs not found in %s" % (len(wanted) - count, input_file))
+    from Bio import SeqIO
+
+    input_file = "{Forward fastq file}"
+    id_file = "{Library}-{plasmid accession}fastqid.txt"
+    output_file = "{Library}-{plasmid accession}.fastq"
+    wanted = set(line.rstrip("\n").split(None, 1)[0] for line in open(id_file))
+    print("Found %i unique identifiers in %s" % (len(wanted), id_file))
+    records = (r for r in SeqIO.parse(input_file, "fastq") if r.id in wanted)
+    count = SeqIO.write(records, output_file, "fastq")
+    print("Saved %i records from %s to %s" % (count, input_file, output_file))
+    if count < len(wanted):
+        print("Warning %i IDs not found in %s" % (len(wanted) - count, input_file))
 
 
 • This python script creates new fastq files with given reverse read id's.
 
-.. code-block:: python
-   :linesos:
+.. code:: python
 
 	from Bio import SeqIO
 
@@ -479,11 +477,7 @@ Filtering reads with given contigs
 
 • After the assembly process we have ace files for each contig. Some regions in the contigs have lower depth for reference bases. We do not want those reads and we should delete them. The following python script will do the work.
 
-.. code-block:: python
-   :lineos:
-
-	#!/usr/bin/python
-	# coding: utf-8
+.. code:: python
 
 	import sys
 	from Bio.Sequencing import Ace
