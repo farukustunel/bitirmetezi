@@ -427,39 +427,40 @@ Creating new fastq files with given read id's
 
 • This python script creates new fastq files with given forward read id's.
 
-.. code:: python
+.. code-block:: python
+   :linenos:
 
+   from Bio import SeqIO
 
-    from Bio import SeqIO
-
-    input_file = "{Forward fastq file}"
-    id_file = "{Library}-{plasmid accession}fastqid.txt"
-    output_file = "{Library}-{plasmid accession}.fastq"
-    wanted = set(line.rstrip("\n").split(None, 1)[0] for line in open(id_file))
-    print("Found %i unique identifiers in %s" % (len(wanted), id_file))
-    records = (r for r in SeqIO.parse(input_file, "fastq") if r.id in wanted)
-    count = SeqIO.write(records, output_file, "fastq")
-    print("Saved %i records from %s to %s" % (count, input_file, output_file))
-    if count < len(wanted):
-        print("Warning %i IDs not found in %s" % (len(wanted) - count, input_file))
+   input_file = "{Forward fastq file}"
+   id_file = "{Library}-{plasmid accession}fastqid.txt"
+   output_file = "{Library}-{plasmid accession}.fastq"
+   wanted = set(line.rstrip("\n").split(None, 1)[0] for line in open(id_file))
+   print("Found %i unique identifiers in %s" % (len(wanted), id_file))
+   records = (r for r in SeqIO.parse(input_file, "fastq") if r.id in wanted)
+   count = SeqIO.write(records, output_file, "fastq")
+   print("Saved %i records from %s to %s" % (count, input_file, output_file))
+   if count < len(wanted):
+       print("Warning %i IDs not found in %s" % (len(wanted) - count, input_file))
 
 
 • This python script creates new fastq files with given reverse read id's.
 
-.. code:: python
+.. code-block:: python
+   :linenos:
+   
+   from Bio import SeqIO
 
-	from Bio import SeqIO
-
-	input_file = "{Reverse fastq file}"
-	id_file = "{Library}-{plasmid accession}fastqid.txt"
-	output_file = "{Library}-{plasmid accession}.fastq"
-	wanted = set(line.rstrip("\n").split(None, 1)[0] for line in open(id_file))
-	print("Found %i unique identifiers in %s" % (len(wanted), id_file))
-	records = (r for r in SeqIO.parse(input_file, "fastq") if r.id in wanted)
-	count = SeqIO.write(records, output_file, "fastq")
-	print("Saved %i records from %s to %s" % (count, input_file, output_file))
-	if count < len(wanted):
-    	print("Warning %i IDs not found in %s" % (len(wanted) - count, input_file))
+   input_file = "{Reverse fastq file}"
+   id_file = "{Library}-{plasmid accession}fastqid.txt"
+   output_file = "{Library}-{plasmid accession}.fastq"
+   wanted = set(line.rstrip("\n").split(None, 1)[0] for line in open(id_file))
+   print("Found %i unique identifiers in %s" % (len(wanted), id_file))
+   records = (r for r in SeqIO.parse(input_file, "fastq") if r.id in wanted)
+   count = SeqIO.write(records, output_file, "fastq")
+   print("Saved %i records from %s to %s" % (count, input_file, output_file))
+   if count < len(wanted):
+       print("Warning %i IDs not found in %s" % (len(wanted) - count, input_file))
 
 
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -480,61 +481,61 @@ Filtering reads with given contigs
 .. code-block:: python
    :linenos:
 
-	import sys
-	from Bio.Sequencing import Ace
-	from Bio import SeqIO
-	import numpy as np
+   import sys
+   from Bio.Sequencing import Ace
+   from Bio import SeqIO
+   import numpy as np
 
-	if len(sys.argv)<4:
-  		print(sys.argv[0],"not enough arguments")
-  		print("Usage:", sys.argv[0],"ACE input.fastq output.fastq")
-  		exit(1)
+   if len(sys.argv)<4:
+       print(sys.argv[0],"not enough arguments")
+       print("Usage:", sys.argv[0],"ACE input.fastq output.fastq")
+       exit(1)
 
-	cmd_name = sys.argv.pop(0)
-	input_file = sys.argv.pop(0)
-	output_file = sys.argv.pop(0)
+   cmd_name = sys.argv.pop(0)
+   input_file = sys.argv.pop(0)
+   output_file = sys.argv.pop(0)
 
-	def parse_af(ace_file):
-  		ans = {}
-  		for line in open(ace_file):
-    		if line.startswith("AF"):
-      			_, read_id, _, pos = line.strip().split()
-      				ans[read_id]=int(pos)
-  		return(ans)
+   def parse_af(ace_file):
+       ans = {}
+   for line in open(ace_file):
+       if line.startswith("AF"):
+           _, read_id, _, pos = line.strip().split()
+           ans[read_id]=int(pos)
+   return(ans)
 
-	bad_reads = set()
+   bad_reads = set()
 
-	for ace_file in sys.argv:
-  		assembly = Ace.read(open(ace_file))
-  		contig = assembly.contigs[0]
-  		print("%s: %d reads" % (ace_file, contig.nreads))
-  	if len(contig.af)==0:
-    	af = parse_af(ace_file)
-    	all_reads = [(contig.reads[i].rd.name,
-        			 af[contig.reads[i].rd.name],
-        			 contig.reads[i].rd.padded_bases) for i in range(contig.nreads)]
-  	else:
-    	all_reads = [(contig.reads[i].rd.name,
-        			 contig.af[i].padded_start,
-        			 contig.reads[i].rd.padded_bases) for i in range(contig.nreads)]
+   for ace_file in sys.argv:
+       assembly = Ace.read(open(ace_file))
+       contig = assembly.contigs[0]
+  	   print("%s: %d reads" % (ace_file, contig.nreads))
+   if len(contig.af)==0:
+       af = parse_af(ace_file)
+       all_reads = [(contig.reads[i].rd.name,
+        			af[contig.reads[i].rd.name],
+        			contig.reads[i].rd.padded_bases) for i in range(contig.nreads)]
+   else:
+       all_reads = [(contig.reads[i].rd.name,
+        			contig.af[i].padded_start,
+        			contig.reads[i].rd.padded_bases) for i in range(contig.nreads)]
 
-  	depth = np.zeros(contig.nbases+1, dtype=int)
+   depth = np.zeros(contig.nbases+1, dtype=int)
 
-  	for name, start, length in all_reads:
-    	for j in range(start, start + length):
-        	depth[j] +=1
+   for name, start, length in all_reads:
+       for j in range(start, start + length):
+           depth[j] +=1
 
-  	bad_places = (depth < (depth.mean()-3*depth.std())) | (depth>= (depth.mean()+3*depth.std()))
+   bad_places = (depth < (depth.mean()-3*depth.std())) | (depth>= (depth.mean()+3*depth.std()))
 
-  	for name, start, length in all_reads:
-    	bad_bp_in_read = np.sum(bad_places[start:(start+length)])
-    	if bad_bp_in_read > length/5: # if over 20% of bp are "bad"...
-        	bad_reads.add(name[:name.index("_")]) # then remember the fragment name
+   for name, start, length in all_reads:
+       bad_bp_in_read = np.sum(bad_places[start:(start+length)])
+       if bad_bp_in_read > length/5: # if over 20% of bp are "bad"...
+           bad_reads.add(name[:name.index("_")]) # then remember the fragment name
 
-	print("Now filtering %d bad fragments" % (len(bad_reads)))
-	records = [r for r in SeqIO.parse(input_file, "fastq") if r.id not in bad_reads]
-	count = SeqIO.write(records, output_file, "fastq")
-	print("Saved %i records from %s to %s" % (count, input_file, output_file))
+   print("Now filtering %d bad fragments" % (len(bad_reads)))
+   records = [r for r in SeqIO.parse(input_file, "fastq") if r.id not in bad_reads]
+   count = SeqIO.write(records, output_file, "fastq")
+   print("Saved %i records from %s to %s" % (count, input_file, output_file))
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Assembly with filtered reads
