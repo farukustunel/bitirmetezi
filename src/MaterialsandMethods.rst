@@ -477,7 +477,8 @@ Filtering reads with given contigs
 
 • After the assembly process we have ace files for each contig. Some regions in the contigs have lower depth for reference bases. We do not want those reads and we should delete them. The following python script will do the work.
 
-.. code:: python
+.. code-block:: python
+   :linenos:
 
 	import sys
 	from Bio.Sequencing import Ace
