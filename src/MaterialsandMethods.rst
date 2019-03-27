@@ -366,9 +366,7 @@ F5-Best candidates
 .. code:: bash
 
     bwa index NC_025138.1.fasta
-	
 	bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' NC_025138.1.fasta 1-F5-96_S1_L001_R1_001.fastq.gz 1-F5-96_S1_L001_R2_001.fastq.gz > F5-NC_025138.1.sam
-	
 	samtools fixmate -O bam F5-NC_025138.1.sam F5-NC_025138.1fixmate.bam
 	samtools sort -O bam -o F5-NC_025138.1fixmatesorted.bam F5-NC_025138.1fixmate.bam
 
@@ -377,9 +375,7 @@ F5-Best candidates
 .. code:: bash
 
 	bwa index {plasmid accession}.fasta
-	
 	bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' {plasmid accession}.fasta 1-F5-96_S1_L001_R1_001.fastq.gz 1-F5-96_S1_L001_R2_001.fastq.gz > F5-{plasmid accession}.sam
-	
 	samtools fixmate -O bam F5-{plasmid accession}.sam F5-{plasmid accession}fixmate.bam
 	samtools sort -O bam -o F5-{plasmid accession}fixmatesorted.bam F5-{plasmid accession}fixmate.bam
 
@@ -393,9 +389,7 @@ F20-Best candidates
 .. code:: bash
 
     bwa index NC_025138.1.fasta
-	
 	bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' NC_025138.1.fasta 4-F20-96_S2_L001_R1_001.fastq.gz 4-F20-96_S2_L001_R2_001.fastq.gz > F20-NC_025138.1.sam
-	
 	samtools fixmate -O bam F20-NC_025138.1.sam F20-NC_025138.1fixmate.bam
 	samtools sort -O bam -o F20-NC_025138.1fixmatesorted.bam F20-NC_025138.1fixmate.bam
 
@@ -404,9 +398,7 @@ F20-Best candidates
 .. code:: bash
 
 	bwa index {plasmid accession}.fasta
-	
 	bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' {plasmid accession}.fasta 4-F20-96_S2_L001_R1_001.fastq.gz 4-F20-96_S2_L001_R2_001.fastq.gz > F20-{plasmid accession}.sam
-	
 	samtools fixmate -O bam F20-{plasmid accession}.sam F20-{plasmid accession}fixmate.bam
 	samtools sort -O bam -o F20-{plasmid accession}fixmatesorted.bam F20-{plasmid accession}fixmate.bam
 
@@ -415,11 +407,7 @@ F20-Best candidates
 Creating new fastq files contain only mapped reads with best candidates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-----------------------------------------------
-Getting read id's for creating new fastq files
-----------------------------------------------
-
-• For NC_025138.1
+• Getting read id's for creating new fastq files for NC_025138.1
 
 .. code:: bash
 	
@@ -427,7 +415,7 @@ Getting read id's for creating new fastq files
 	samtools view F20-NC_025138.1fixmatesorted.bam |cut -f 1|uniq |head -205000|sort -u > F20-NC_025138.1fastqid.txt
 
 
-• For NC_025175.1
+• Getting read id's for creating new fastq files for NC_025175.1
 
 .. code:: bash
 
