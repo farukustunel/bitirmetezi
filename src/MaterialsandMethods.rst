@@ -25,7 +25,7 @@ Data
 Protocols
 =========
 
-• After obtaining "**Next Generation Sequencing**" (a.k.a NGS) reads, the first step of many *NGS* analyzes is the read mapping or the alignment of the reads with references. So, we compared each library with references by using Burrows-Wheeler Aligner alignment tool. This tool contains different aligners with different algorithms. Two of them are Bwa-mem and Bwa-aln. We used both them and analyzed the results.
+• After obtaining "**Next Generation Sequencing**" (a.k.a NGS) reads, the first step of many *NGS* analyzes is the read mapping or the alignment of the reads with references. So, we compared each library with references by using Burrows-Wheeler Aligner alignment tool. This tool contains different aligners with different algorithms. Two of them are Bwa-mem and Bwa-aln. We used both of them and analyzed the results.
 
 -------
 Bwa-mem
