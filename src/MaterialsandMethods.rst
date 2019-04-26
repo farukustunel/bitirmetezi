@@ -6,7 +6,7 @@ Data
 1. 1-F5-96_S1_L001_R1_001.fastq.gz  > Library **F5**, *Forward Reads*
 2. 1-F5-96_S1_L001_R2_001.fastq.gz  > Library **F5**, *Reverse Reads*
 3. 4-F20-96_S2_L001_R1_001.fastq.gz > Library **F20**, *Forward Reads*
-5. 4-F20-96_S2_L001_R2_001.fastq.gz > Library **F20**, *Reverse Reads*
+4. 4-F20-96_S2_L001_R2_001.fastq.gz > Library **F20**, *Reverse Reads*
 
 
 • In this study, we aim to find original plasmid that matches with our reads in the *RefSeq database*. Reference records can be obtained from `RefSeq Database`_ with given file names listed below.
