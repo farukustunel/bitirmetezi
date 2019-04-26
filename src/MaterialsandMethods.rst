@@ -1,19 +1,17 @@
 ====
 Data
 ====
-• *Terje Stanium's* plasmids which are called:
+• We have two libraries which are called F5 and F20, or we can say that *Escherichia coli* and *Citrobacter freundii*, respectively. For each library, we have forward reads and reverse reads. Also, the original file names are available from the list below. 
 
-1. 1-F5-96_S1_L001_R1_001.fastq.gz  > Library **F5**, *Forward*
-2. 1-F5-96_S1_L001_R2_001.fastq.gz  > Library **F5**, *Reverse*
-3. 4-F20-96_S2_L001_R1_001.fastq.gz > Library **F20**, *Forward*
-4. 4-F20-96_S2_L001_R2_001.fastq.gz > Library **F20**, *Reverse*
-
-Used in this analysis.
+1. 1-F5-96_S1_L001_R1_001.fastq.gz  > Library **F5**, *Forward Reads*
+2. 1-F5-96_S1_L001_R2_001.fastq.gz  > Library **F5**, *Reverse Reads*
+3. 4-F20-96_S2_L001_R1_001.fastq.gz > Library **F20**, *Forward Reads*
+5. 4-F20-96_S2_L001_R2_001.fastq.gz > Library **F20**, *Reverse Reads*
 
 
-• Reference plasmids can be obtain from `Refseq Database`_.
+• In this study, we aim to find original plasmid that matches with our reads in the *RefSeq database*. Reference records can be obtained from `RefSeq Database`_ with given file names listed below.
 
-.. _Refseq Database: https://ftp.ncbi.nlm.nih.gov/refseq/release/plasmid
+.. _RefSeq Database: https://ftp.ncbi.nlm.nih.gov/refseq/release/plasmid
 
 • The name of the files are:
 
@@ -27,30 +25,26 @@ Used in this analysis.
 Protocols
 =========
 
-• We compare the each libraries with references by using Burrows-Wheeler Aligner command line tool.This tool contains different aligners with different algorithms.Two of them are Bwa-mem and Bwa-aln.
+• After obtaining "**Next Generation Sequencing**" (a.k.a NGS) reads, the first step of many *NGS* analyzes is the read mapping or the alignment of the reads with references. So, we compared each library with references by using Burrows-Wheeler Aligner alignment tool. This tool contains different aligners with different algorithms. Two of them are Bwa-mem and Bwa-aln. We used both them and analyzed the results.
 
 -------
 Bwa-mem
 -------
 
-^^^^^^^^^^^
-F5-Plasmid1
-^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+Libraries-References
+^^^^^^^^^^^^^^^^^^^^
 
-• **Indexing reference, aligning Library F5 and plasmid.1.1.genomic.fna.gz**
+• The following *bash* code gives us the result of the alignment which contains the references if the mapped reads more than 1000 only. In the first line, the aligner creates an index for the alignment. ``-p`` parameter provides to entitle of output database. In the second line, bwa carry out the alignment process with ``mem`` algorithm and creates an output in **Sequence Alignment Map** (a.k.a *SAM*) format. ``-o`` parameter indicates the output file. In the third line, samtools sort the sam file and convert it to a bam file. ``-O`` parameter indicates the type of the output file. In the following line, samtools indexing the bam file. In the last line, idxstats gives us statistics about the results. It is a *TAB-delimited* file and each line consisting of *reference sequence name*, *sequence length*, *mapped reads number*, *unmapped reads number*. Therefore, we use awk command to select the third column which means *mapped reads number* and we filtered with a given threshold. After that, we sorted the output with sort command where ``N`` in ``-kN`` is the number of the key, and ``n`` means sort numeric. 
 
-.. code:: bash
+.. code-block:: bash
+   :linenos:
 
-   bwa index -p plasmid1 /home/db/Mirror/ftp.ncbi.nlm.nih.gov/refseq/release/plasmid/plasmid.1.1.genomic.fna.gz
-   bwa mem plasmid1 1-F5-96_S1_L001_R1_001.fastq.gz 1-F5-96_S1_L001_R2_001.fastq.gz -o F5-plasmid1.sam
-
-• **Converting SAM file to BAM file, sorting BAM file and indexing,getting read ids with mapping more than 1000 reads**
-
-.. code:: bash
-
-   samtools sort -O BAM -o F5-plasmid1.bam F5-plasmid1.sam
-   samtools index F5-plasmid1.bam
-   samtools idxstats F5-plasmid1.bam |awk '$3>1000'|sort -k3n |grep > F5-plasmid1.stats
+   bwa index -p [Database name] [Reference_file_path]
+   bwa mem [Database name] [Forward fastq file] [Reverse fastq file] -o [Output file].sam
+   samtools sort -O BAM -o [Output file].bam [Output file].sam
+   samtools index [Output file].bam
+   samtools idxstats [Output file].bam |awk '$3>1000'|sort -k3n > [Output file].stats
 
 
 ^^^^^^^^^^^^^^^^^
