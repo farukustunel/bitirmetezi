@@ -25,7 +25,7 @@ Data
 Protocols
 =========
 
-• After obtaining "**Next Generation Sequencing**" (a.k.a NGS) reads, the first step of many *NGS* analyzes is the read mapping or the alignment of the reads with references. So, we compared each library with references by using Burrows-Wheeler Aligner alignment tool. This tool contains different aligners with different algorithms. Two of them are Bwa-mem and Bwa-aln. We used both of them and analyzed the results.
+• After obtaining "**Next Generation Sequencing**" (a.k.a NGS) reads, the first step of many *NGS* analyzes is the read mapping or the alignment of the reads with references. Hence, we compared each library with references by using Burrows-Wheeler Aligner alignment tool. This tool contains different aligners with different algorithms. Two of them are Bwa-mem and Bwa-aln. We used both of them and analyzed the results.
 
 -------
 Bwa-mem
@@ -46,302 +46,51 @@ Libraries-References
    samtools index [Output file].bam
    samtools idxstats [Output file].bam |awk '$3>1000'|sort -k3n > [Output file].stats
 
-
-^^^^^^^^^^^^^^^^^
-F5-Other Plasmids
-^^^^^^^^^^^^^^^^^
-
-• **Indexing reference, aligning Library F5 and other plasmids.**
-
-.. code:: bash
-   
-   bwa index -p plasmid{number} {file_path}
-   bwa mem plasmid{number} {Forward fastq file} {Reverse fastq file} -o F5-plasmid{number}.sam
-
-• **Converting SAM file to BAM file, sorting BAM file and indexing,getting read ids with mapping more than 1000 reads**
-
-.. code:: bash
-
-   samtools sort -O BAM -o F5-plasmid{number}.bam F5-plasmid{number}.sam
-   samtools index F5-plasmid{number}.bam
-   samtools idxstats F5-plasmid{number}.bam |awk '$3>1000'|sort -k3n > F5-plasmid{number}.stats
-
-
-^^^^^^^^^^^^
-F20-Plasmid1
-^^^^^^^^^^^^
-
-• **Aligning Library F20 and plasmid.1.1.genomic.fna.gz**
-
-.. code:: bash
-
-   bwa mem plasmid1 4-F20-96_S2_L001_R1_001.fastq.gz 4-F20-96_S2_L001_R2_001.fastq.gz -o F20-plasmid1.sam
-
-• **Converting SAM file to BAM file, sorting BAM file and indexing,getting read ids with mapping more than 1000 reads**
-
-.. code:: bash
-   
-   samtools sort -O BAM -o F20-plasmid1.bam F20-plasmid1.sam
-   samtools index F20-plasmid1.bam
-   samtools idxstats F20-plasmid1.bam |awk '$3>1000'|sort -k3n > F20-plasmid1.stats 
-
-
-^^^^^^^^^^^^^^^^^^
-F20-Other Plasmids
-^^^^^^^^^^^^^^^^^^
-
-• **Indexing reference, aligning Library F20 and other plasmids.**
-
-.. code:: bash
-   
-   bwa index -p plasmid{number} {file_path}
-   bwa mem plasmid{number} {Forward fastq file} {Reverse fastq file} -o F20-plasmid{number}.sam
-
-• **Converting SAM file to BAM file, sorting BAM file and indexing,getting read ids with mapping more than 1000 reads**
-
-.. code:: bash
-
-   samtools sort -O BAM -o F20-plasmid{number}.bam F20-plasmid{number}.sam
-   samtools index F20-plasmid{number}.bam
-   samtools idxstats F20-plasmid{number}.bam |awk '$3>1000'|sort -k3n > F20-plasmid{number}.stats
-
-
 -------
 Bwa-aln
 -------
 
-• **Indexing reference plasmids**
+• Using ``bwa-aln`` more or less is the same with ``bwa-mem`` except minor differences. As is seen in the previous explanation, the differences occur in the second, third, fourth and fifth lines. In the second line of code, we took up the database and we carried out the alignment process with our reads. The output is a ``sai`` file which is produced by ``bwa-aln``. In the third line, we follow the same idea for reverse reads. In the following line, ``sampe`` sub-command allow us to create a sam file with combining forward reads and reverse reads alignment. In the fifth line, we used ``samtools`` with ``view`` sub-command, ``-bS`` parameter allows us to create bam file from the sam file where ``-b`` parameter for the type of output file and ``-S`` parameter for ignoring compatibility for previous versions of ``samtools ``.
 
-.. code:: bash
+.. code-block:: bash
+   :linenos:
 
-   bwa index -p plasmid1 /home/db/Mirror/ftp.ncbi.nlm.nih.gov/refseq/release/plasmid/plasmid.1.1.genomic.fna.gz
-   bwa index -p plasmid{number} {file_path}
+   bwa index -p [Database name] [Reference_file_path]
+   bwa aln [Database name] [Forward fastq file] > [Forward Output].sai
+   bwa aln [Database name] [Reverse fastq file] > [Reverse Output].sai
+   bwa sampe [Database name] [Forward Output].sai [Reverse Output].sai \
+   [Forward fastq file] [Reverse fastq file] > [Output file].sam
+   samtools view -bS [Output file].sam > [Output file].bam
+   samtools sort -O bam -o [Sorted output file].bam  [Output file].bam
+   samtools index [Sorted output file].bam
+   samtools idxstats [Sorted output file].bam |awk '$3>1000'|sort -k3n > [Output file].stats
 
-^^^^^^^^^^^
-F5-Plasmid1
-^^^^^^^^^^^
+---------------------------
+Finding Breadth of Coverage
+---------------------------
 
-• **Aligning forward and reverse reads with references**
+• In order to determine the most appropriate references, we should know the breadth of coverage of each reference. For this purpose, we used ``bedtools`` with ``genomeCoverageBed`` sub-command. ``genomeCoverageBed`` computes a histogram of coverage with a given genome. In the first line of code, we took the ``samtools idxstats`` output and select the column one and two. As we mentioned previously, ``idxstats`` output contains *reference sequence name*, *sequence length*, *mapped reads number*, *unmapped reads number*, respectively. We need only first and second column for the make ``genomeCoverageBed`` work. In the second line, ``-ibam`` parameter allows us to use bam file as an input. With ``-g`` parameter, the tool will report the depth of coverage at each base on each reference in the genome file. If we look at the output file, we can see that each line consisting of *reference sequence name*, *depth of coverage*, *number of bases with given depth*, *length of the reference* and *fraction of bases on reference with given depth*, respectively. In the third line, thanks to the ``awk`` command, we can calculate the breadth of coverage, easily.
 
-.. code:: bash
+.. warning::
+
+   • **0** depth means unmapped regions occur in reference. We must pay attention, if we want the calculate the breadth of coverage, properly.
+
+• We can say that the breadth of coverage can be calculated with ``1-$5`` if the second column equals *0* which means that summary of fraction of all depth, but 0.
+
+.. note::
+
+   • ``0.2>$5`` this condition allow us to choose references with higher coverage.
+
+• In the following lines, we combine the results in one file with ``cat`` command and we sort the file numerically.  
    
-   bwa aln plasmid1 1-F5-96_S1_L001_R1_001.fastq.gz > F5-R1-plasmid1.sai
-   bwa aln plasmid1 1-F5-96_S1_L001_R2_001.fastq.gz > F5-R2-plasmid1.sai
-
-• **Combining outputs in one SAM file**
-
-.. code:: bash
-   
-   bwa sampe plasmid1 F5-R1-plasmid1.sai F5-R2-plasmid1.sai 1-F5-96_S1_L001_R1_001.fastq.gz 1-F5-96_S1_L001_R2_001.fastq.gz >F5-plasmid1.sam
-
-• **Converting SAM file to BAM file**
-
-.. code:: bash
-   
-   samtools view -bS F5-plasmid1.sam > F5-plasmid1.bam 
-
-• **Sorting BAM file**
-
-.. code:: bash
-   
-   samtools sort -O bam -o F5-plasmid1sorted.bam  F5-plasmid1.bam
-
-• **Indexing sorted BAM file**
-
-.. code:: bash
-   
-   samtools index F5-plasmid1sorted.bam
-
-• **Getting read ids with mapping more than 1000 reads**
-
-.. code:: bash
-   
-   samtools idxstats F5-plasmid1sorted.bam |awk '$3>1000'|sort -k3n > F5-plasmid1.stats
-
-
-^^^^^^^^^^^^^^^^^
-F5-Other Plasmids
-^^^^^^^^^^^^^^^^^
-
-• **Aligning forward and reverse reads with references**
-
-.. code:: bash
-   
-   bwa aln plasmid{number} {Forward fastq file} > F5-R1-plasmid{number}.sai
-   bwa aln plasmid{number} {Reverse fastq file} > F5-R2-plasmid{number}.sai
-
-• **Combining outputs in one SAM file**
-
-.. code:: bash
-   
-   bwa sampe plasmid{number} F5-R1-plasmid{number}.sai F5-R2-plasmid{number}.sai {Forward fastq file} {Reverse fastq file} > F5-plasmid{number}.sam
-
-• **Converting SAM file to BAM file**
-
-.. code:: bash
-   
-   samtools view -bS F5-plasmid{number}.sam > F5-plasmid{number}.bam 
-
-• **Sorting BAM file**
-
-.. code:: bash
-   
-   samtools sort -O bam -o F5-plasmid{number}sorted.bam  F5-plasmid{number}.bam
-
-• **Indexing sorted BAM file**
-
-.. code:: bash
-   
-   samtools index F5-plasmid{number}sorted.bam
-
-• **Getting read ids with mapping more than 1000 reads**
-
-.. code:: bash
-   
-   samtools idxstats F5-plasmid{number}sorted.bam |awk '$3>1000'|sort -k3n > F5-plasmid{number}.stats
-
-
-^^^^^^^^^^^^
-F20-Plasmid1
-^^^^^^^^^^^^
-
-• **Aligning forward and reverse reads with references**
-
-.. code:: bash
-   
-   bwa aln plasmid1 4-F20-96_S2_L001_R1_001.fastq.gz > F20-R1-plasmid1.sai
-   bwa aln plasmid1 4-F20-96_S2_L001_R2_001.fastq.gz > F20-R2-plasmid1.sai
-
-• **Combining outputs in one SAM file**
-
-.. code:: bash
-   
-   bwa sampe plasmid1 F20-R1-plasmid1.sai F20-R2-plasmid1.sai 4-F20-96_S2_L001_R1_001.fastq.gz 4-F20-96_S2_L001_R2_001.fastq.gz > F20-plasmid1.sam
-
-• **Converting SAM file to BAM file**
-
-.. code:: bash
-   
-   samtools view -bS F20-plasmid1.sam > F20-plasmid1.bam 
-
-• **Sorting BAM file**
-
-.. code:: bash
-   
-   samtools sort -O bam -o F20-plasmid1sorted.bam  F20-plasmid1.bam
-
-• **Indexing sorted BAM file**
-
-.. code:: bash
-   
-   samtools index F20-plasmid1sorted.bam
-
-• **Getting read ids with mapping more than 1000 reads**
-
-.. code:: bash
-   
-   samtools idxstats F20-plasmid1sorted.bam |awk '$3>1000'|sort -k3n > F20-plasmid1.stats
-
-
-^^^^^^^^^^^^^^^^^^
-F20-Other Plasmids
-^^^^^^^^^^^^^^^^^^
-
-• **Aligning forward and reverse reads with references**
-
-.. code:: bash
-   
-   bwa aln plasmid{number} {Forward fastq file} > F20-R1-plasmid{number}.sai
-   bwa aln plasmid{number} {Reverse fastq file} > F20-R2-plasmid{number}.sai
-
-• **Combining outputs in one SAM file**
-
-.. code:: bash
-   
-   bwa sampe plasmid{number} F20-R1-plasmid{number}.sai F20-R2-plasmid{number}.sai {Forward fastq file} {Reverse fastq file} > F20-plasmid{number}.sam
-
-• **Converting SAM file to BAM file**
-
-.. code:: bash
-   
-   samtools view -bS F20-plasmid{number}.sam > F20-plasmid{number}.bam 
-
-• **Sorting BAM file**
-
-.. code:: bash
-   
-   samtools sort -O bam -o F20-plasmid{number}sorted.bam  F20-plasmid{number}.bam
-
-• **Indexing sorted BAM file**
-
-.. code:: bash
-   
-   samtools index F20-plasmid{number}sorted.bam
-
-• **Getting read ids with mapping more than 1000 reads**
-
-.. code:: bash
-   
-   samtools idxstats F20-plasmid{number}sorted.bam |awk '$3>1000'|sort -k3n > F20-plasmid{number}.stats
-
-
-----------------
-Finding Coverage
-----------------
-
-• **Getting reference id and mapped reads for calculating genome coverage**
-
-.. code:: bash
-
-   samtools idxstats F5-plasmid1.bam |awk -v OFS='\t' '{print $1, $2}' > F5-plasmid1.txt
-   samtools idxstats F5-plasmid{number}.bam |awk -v OFS='\t' '{print $1, $2}' > F5-plasmid{number}.txt
-   samtools idxstats F20-plasmid1.bam |awk -v OFS='\t' '{print $1, $2}' > F20-plasmid1.txt
-   samtools idxstats F20-plasmid{number}.bam |awk -v OFS='\t' '{print $1, $2}' > F20-plasmid{number}.txt
-
-
-
-**Calculating Depth and Coverage from a BAM file**
-
-• The first column of output file is reference id. The following columns are respectively called depth number, number of bases
-with given depth, reference length and percentage of coverage with given depth.
-
-.. code:: bash
-   
-   genomeCoverageBed -ibam F5-plasmid1.bam -g F5-plasmid1.txt > F5-plasmid1coverage.txt
-   genomeCoverageBed -ibam F5-plasmid{number}.bam -g F5-plasmid{number}.txt > F5-plasmid{number}coverage.txt
-   genomeCoverageBed -ibam F20-plasmid1.bam -g F20-plasmid1.txt > F20-plasmid1coverage.txt
-   genomeCoverageBed -ibam F20-plasmid{number}.bam -g F20-plasmid{number}.txt > F20-plasmid{number}coverage.txt
-
-
-**Calculating Breadth of Coverage and choosing best candidates for assembly**
-
-• If second column equals number zero, it means that 0 depth or unmapped regions occur for reference. We can easily calcutate
-the breadth of coverage with 1-$5 condition which means that summary of percentage of all depth but 0. Then we can determine
-the best candidates for each plasmids.  
-
-.. code:: bash
-   
-   awk -v OFS='\t' '$2==0 && 0.2>$5 {print $1,1-$5}' F5-plasmid1coverage.txt > F5-plasmid1coveragesummary.txt
-   awk -v OFS='\t' '$2==0 && 0.2>$5 {print $1,1-$5}' F5-plasmid{number}coverage.txt > F5-plasmid{number}coveragesummary.txt
-   awk -v OFS='\t' '$2==0 && 0.2>$5 {print $1,1-$5}' F20-plasmid1coverage.txt > F20-plasmid1coveragesummary.txt
-   awk -v OFS='\t' '$2==0 && 0.2>$5 {print $1,1-$5}' F20-plasmid{number}coverage.txt > F20-plasmid{number}coveragesummary.txt
-
-
-• **Combining Library F5 results**
-
-.. code:: bash
-   
-   cat F5-plasmid1coveragesummary.txt F5-plasmid2coveragesummary.txt F5-plasmid3coveragesummary.txt F5-plasmid4coveragesummary.txt F5-plasmid5coveragesummary.txt > F5-plasmidcoverageallsummary.txt
-   
-   sort -k2nr F5-plasmidcoverageallsummary.txt > F5-plasmidcoverageallsummarysorted.txt
-  
-• **Combining Library F20 results**
-
-.. code:: bash
-   
-   cat F20-plasmid1coveragesummary.txt F20-plasmid2coveragesummary.txt F20-plasmid3coveragesummary.txt F20-plasmid4coveragesummary.txt F20-plasmid5coveragesummary.txt > F20-plasmidcoverageallsummary.txt
-   
-   sort -k2nr F20-plasmidcoverageallsummary.txt > F20-plasmidcoverageallsummarysorted.txt
+.. code-block:: bash
+   :linenos:
+
+   samtools idxstats [Output file].bam |awk -v OFS='\t' '{print $1, $2}' > [Output file].txt
+   genomeCoverageBed -ibam [Output file].bam -g [Output file].txt > [Coverage output file].txt
+   awk -v OFS='\t' '$2==0 && 0.2>$5 {print $1,1-$5}' [Coverage output file].txt > [Coverage summary output file].txt
+   cat [Coverage summary output file].txt > [All coverage summary file].txt
+   sort -k2nr [All coverage summary file].txt > [Sorted all coverage summary file].txt
 
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
