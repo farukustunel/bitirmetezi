@@ -58,8 +58,7 @@ Bwa-aln
    bwa index -p [Database name] [Reference_file_path]
    bwa aln [Database name] [Forward fastq file] > [Forward Output].sai
    bwa aln [Database name] [Reverse fastq file] > [Reverse Output].sai
-   bwa sampe [Database name] [Forward Output].sai [Reverse Output].sai \
-   [Forward fastq file] [Reverse fastq file] > [Output file].sam
+   bwa sampe [Database name] [Forward Output].sai [Reverse Output].sai [Forward fastq file] [Reverse fastq file] > [Output file].sam
    samtools view -bS [Output file].sam > [Output file].bam
    samtools sort -O bam -o [Sorted output file].bam  [Output file].bam
    samtools index [Sorted output file].bam
