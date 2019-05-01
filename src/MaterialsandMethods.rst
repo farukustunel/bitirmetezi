@@ -36,7 +36,7 @@ Protocols
 • Trimming adaptors from both 5' and 3' ends of your sequences are the most crucial step for the genome assembly process. Also, getting rid of low-quality reads improves the standard of your analyzes. We used ``trimmomatic`` as a trimming tool and we performed this process by using the following bash code.
 
 .. code-block:: bash
-   :lineos:
+   :linenos:
 
    java -jar trimmomatic-0.36.jar PE -phred33 [Forward fastq file] [Reverse fastq file] \
    [Forward paired output] [Forward unpaired output] [Reverse paired output] [Reverse unpaired output] \
