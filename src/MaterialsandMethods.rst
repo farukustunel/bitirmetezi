@@ -1,37 +1,30 @@
 ====
 Data
 ====
-• We have two libraries which are called F5 and F20, or we can say that *Escherichia coli* and *Citrobacter freundii*, respectively. For each library, we have forward reads and reverse reads. Also, the original file names are available from the list below. 
+Samples were taken from plasmids isolated in *Escherichia coli* and *Citrobacter freundii*. These samples were sequenced into two libraries,  called F5 and F20, respectively. Each library contains forward and reverse reads, in two separated files. The file names of these libraries are: 
 
 1. 1-F5-96_S1_L001_R1_001.fastq.gz  > Library **F5**, *Forward Reads*
 2. 1-F5-96_S1_L001_R2_001.fastq.gz  > Library **F5**, *Reverse Reads*
 3. 4-F20-96_S2_L001_R1_001.fastq.gz > Library **F20**, *Forward Reads*
 4. 4-F20-96_S2_L001_R2_001.fastq.gz > Library **F20**, *Reverse Reads*
 
-
-• In this study, we aim to find original plasmid that matches with our reads in the *RefSeq database*. Reference records can be obtained from `RefSeq Database`_ with given file names listed below.
-
-.. _RefSeq Database: https://ftp.ncbi.nlm.nih.gov/refseq/release/plasmid
-
-• The name of the files are:
-
-1. plasmid.1.1.genomic.fna.gz
-2. plasmid.2.1.genomic.fna.gz
-3. plasmid.3.1.genomic.fna.gz
-4. plasmid.4.1.genomic.fna.gz
-5. plasmid.5.1.genomic.fna.gz
+We aim to find the if there is a plasmid that matches with our reads in the NCBI *RefSeq database*. We dowloaded all the 15076 sequences that were avilable at https://ftp.ncbi.nlm.nih.gov/refseq/release/plasmid on YY/YYYY, packed in 5 files.
 
 =========
 Protocols
 =========
 
-• You can see the workflow for bacterial genome assembly used in this study from the given figure below.
+The workflow for bacterial genome assembly used in this study is shown in the figure below.
 
 .. figure:: ../_static/protocol.png
    :width: 300px
    :align: center
-   :height: 700px
+   :height: 800px
    :figclass: align-center 
+
+--------
+Trimming
+--------
 
 • Trimming adaptors from both 5' and 3' ends of your sequences are the most crucial step for the genome assembly process. Also, getting rid of low-quality reads improves the standard of your analyzes. We used ``trimmomatic`` as a trimming tool and we performed this process by using the following bash code.
 
@@ -44,19 +37,31 @@ Protocols
    LEADING:<quality> TRAILING:<quality> SLIDINGWINDOW:<windowSize>:<requiredQuality> MINLEN:<length>
 
 
-• You can see from the above code, ``trimmomatic`` is a java based application. In the first line, we used ``java -jar trimmomatic-0.36.jar`` command to run the tool. ``PE`` parameter refers to paired-end data as an input. ``-phred33`` parameter is the quality type of your sequences, it can be changed for different quality types such as ``-phred64``. As a read input, we used our raw fastq files. In the second line, you can specify the output names. In the following line, ``ILLUMINACLIP`` parameter takes four input. With ``<fastaWithAdaptersEtc>``, you can choose a fasta file containing all adaptors and PCR sequences, etc. We used ``TruSeq3-PE.fa`` file for this option. ``<seed mismatches>`` option, allows us to choose the maximum mismatch count which will still allow a full match to be performed. We used ``2`` for this option. ``<palindrome clip threshold>`` specifies how accurate the match between the two 'adapter ligated' reads. We used ``30`` for this option. With ``<simple clip threshold>``, you can specify how accurate the match between any adapter etc. We used ``10`` for this option. In the last line, ``LEADING`` parameter allow us to specify the minimum quality required to keep a base. We used ``3`` for this option. ``TRAILING`` parameter acts as same with the previous one. We used ``3`` for this option. ``SLIDINGWINDOW`` parameter takes two inputs. With ``<windowSize>`` option, you can specify the number of bases to average across. With ``<requiredQuality>`` option, you can specify the average quality required. We used ``4 and 15`` for this option. ``MINLEN`` parameter allows us to specify the minimum length of reads to be kept. We used ``36`` for this option.
- 
+• As you can see from the above code, ``trimmomatic`` is a java based application. In the first line, we used ``java -jar trimmomatic-0.36.jar`` command to run the tool. ``PE`` parameter refers to paired-end data as an input. ``-phred33`` parameter is the quality type of your sequences, it can be changed for different quality types such as ``-phred64``. 
+
+As a read input, we used our raw fastq files. In the second line, you can specify the output names. In the following line, ``ILLUMINACLIP`` parameter takes four input. With ``<fastaWithAdaptersEtc>``, you can choose a fasta file containing all adaptors and PCR sequences, etc. We used ``TruSeq3-PE.fa`` file for this option. ``<seed mismatches>`` option, allows us to choose the maximum mismatch count which will still allow a full match to be performed. We used ``2`` for this option. ``<palindrome clip threshold>`` specifies how accurate the match between the two 'adapter ligated' reads. We used ``30`` for this option. With ``<simple clip threshold>``, you can specify how accurate the match between any adapter etc. We used ``10`` for this option. In the last line, ``LEADING`` parameter allow us to specify the minimum quality required to keep a base. We used ``3`` for this option. ``TRAILING`` parameter acts as same with the previous one. We used ``3`` for this option. ``SLIDINGWINDOW`` parameter takes two inputs. With ``<windowSize>`` option, you can specify the number of bases to average across. With ``<requiredQuality>`` option, you can specify the average quality required. We used ``4 and 15`` for this option. ``MINLEN`` parameter allows us to specify the minimum length of reads to be kept. We used ``36`` for this option.
+
+Trimmomatic produces four fastq files: two for paired forward and reverse reads, and two for unpaired forward and reverse reads.
+
+---------------
+Quality Control
+---------------
+
+Say something about FastQC
+
 -------
 Mapping
 -------
 
-• After obtaining "**Next Generation Sequencing**" (a.k.a NGS) reads, the following step of many *NGS* analyzes is the read mapping or the alignment of the reads with references. Hence, we compared each library with references by using Burrows-Wheeler Aligner alignment tool. This tool contains different aligners with different algorithms. Two of them are ``Bwa-mem`` and ``Bwa-aln``. We used both of them and analyzed the results.
+The following step in our protocol is to map or align the reads into reference plasmids. Hence, we compared each library with plasmid references using Burrows-Wheeler Aligner alignment tool. This tool has different algorithms. Two of them are ``Bwa-mem`` and ``Bwa-aln``. We used both of them and analyzed the results.
 
 ^^^^^^^
 Bwa-mem
 ^^^^^^^
 
-• The following *bash* code gives us the result of the alignment which contains the references if the mapped reads more than 1000 only. In the first line, the aligner creates an index for the alignment. ``-p`` parameter provides to entitle of output database. In the second line, bwa carry out the alignment process with ``mem`` algorithm and creates an output in **Sequence Alignment Map** (a.k.a *SAM*) format. ``-o`` parameter indicates the output file. In the third line, samtools sort the sam file and convert it to a bam file. ``-O`` parameter indicates the type of the output file. In the following line, samtools indexing the bam file. In the last line, idxstats gives us statistics about the results. It is a *TAB-delimited* file and each line consisting of *reference sequence name*, *sequence length*, *mapped reads number*, *unmapped reads number*. Therefore, we use awk command to select the third column which means *mapped reads number* and we filtered with a given threshold. After that, we sorted the output with sort command where ``N`` in ``-kN`` is the number of the key, and ``n`` means sort numeric. 
+• The following *bash* code gives us the result of the alignment which contains only the references if the mapped reads more than 1000 .
+
+In the first line, the aligner creates an index for the alignment. ``-p`` parameter provides to entitle of output database. In the second line, bwa carry out the alignment process with ``mem`` algorithm and creates an output in **Sequence Alignment Map** (a.k.a *SAM*) format. ``-o`` parameter indicates the output file. In the third line, samtools sort the sam file and convert it to a bam file. ``-O`` parameter indicates the type of the output file. In the following line, samtools indexing the bam file. In the last line, idxstats gives us statistics about the results. It is a *TAB-delimited* file and each line consisting of *reference sequence name*, *sequence length*, *mapped reads number*, *unmapped reads number*. Therefore, we use awk command to select the third column which means *mapped reads number* and we filtered with a given threshold. After that, we sorted the output with sort command where ``N`` in ``-kN`` is the number of the key, and ``n`` means sort numeric. 
 
 .. code-block:: bash
    :linenos:
@@ -125,7 +130,9 @@ Aligning Reads with Best Candidates
 Libraries-Best candidates
 -------------------------
 
-• After choosing the references, we want to see which reads in our files mapped with the references. If we can filter the reads, we will have a better chance to follow out assembly process. In the first line, ``bwa`` creates an index for the reference file. In the second line, the alignment process occurs and ``-R`` parameter allows us to configure the header line of the output ``sam`` file. In the following line, ``fixmate`` sub-command provides to fill in mate coordinates from a name sorted alignment. In the last line, ``fixmate`` output sorted with ``sort`` sub-command.  
+• After choosing the reference plasmids, we want to see which reads mapped to them. This will allow us to filter the reads, and keep only the ones that will have a better chance to be assembled properly. The idea is to filter out the reads that may be part of the host DNA.
+
+In the first line, ``bwa`` creates an index for the reference file. In the second line, the alignment process occurs and ``-R`` parameter allows us to configure the header line of the output ``sam`` file. In the following line, ``fixmate`` sub-command provides to fill in mate coordinates from a name sorted alignment. In the last line, ``fixmate`` output sorted with ``sort`` sub-command.  
 
 .. code-block:: bash
    :linenos:
@@ -323,3 +330,64 @@ Assembly with filtered reads
 	quast.py Kmer31-scaffolds.fa -o quast-Abyss
 
 
+=======
+Results
+=======
+
+1. FastQC before and after trimmomatic. Include number of reads.
+    + read length histogram
+    + GC content
+    + per base quality
+
+2. Mapping to references (choosing the best canditates):
+    + total number of references
+    + How many got >50% breadth of coverage
+    + How many got >1000
+    + Top 5 best candidates breadth of coverage
+  + explain Terje's plasmid selection
+    
+3. Selection of plasmid-mapping reads
+  + how many reads in each library v/s plasmid
+  + (to assembly without mixing host DNA)
+  + Depth of coverage for each position in the plasmid
+  + Which parts of the plasmid are not covered in our reads
+  + Which genes are not covered
+  + Is there any region not covered by one of the libraries AND covered by the other library?
+    3.5.  plot Depth of coverage fo each plasmid/library
+      + find atypical depth, suggesting repeats
+      + filter-out reads in high-depth regions
+      + create "filtered reads" fastq files for reassembly
+
+  
+4. Assembly of selected reads
+  + How many Contigs, N50
+  + BLAST contigs v/s refence and make a single FASTA with NNNN separating contigs
+    + make a scaffold based on reference
+    + visualize using ACT
+
+# 5. Analysis of ACE file
+#   + plot Depth of coverage fo each plasmid/library
+#   + find atypical depth, suggesting repeats
+#   + filter-out reads in high-depth regions
+#   + create "filtered reads" fastq files for reassembly
+#   
+# 6. Second assembly
+#   + we expect to have more contigs, since we split the "repeats"
+#   + assemble using SPAdes or any other deBruijn assembler
+#   + maybe test several assemblers
+# 
+# 7. Scaffolding
+
+7a. Mega-Assemble
+  + Fastq of contigs (from previous assembly)
+  + fastq of unused reads (that we didn't use on step 4)
+  + using SPAdes or similar
+  
+8. Find new genes 
+
+9. visualization
+  + circos
+  + ACT
+  + ...
+  
+  🍺
