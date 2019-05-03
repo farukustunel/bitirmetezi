@@ -13,8 +13,7 @@ Welcome to Final Project's documentation!
    
    src/Introduction
    src/MaterialsandMethods
-   src/Results.ipynb
-   
+   src/Results
 
 
 Indices and tables
