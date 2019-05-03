@@ -13,7 +13,7 @@ Welcome to Final Project's documentation!
    
    src/Introduction
    src/MaterialsandMethods
-   src/Results
+   src/Results.ipynb
    
 
 
