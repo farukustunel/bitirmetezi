@@ -14,7 +14,7 @@ Welcome to Final Project's documentation!
    src/Introduction
    src/MaterialsandMethods
    src/Results
-   src/Filteringreadsfromgivencontig
+   
 
 
 Indices and tables
