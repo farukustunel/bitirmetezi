@@ -142,7 +142,7 @@ The breadth of coverage results can give us the answers of questions listed abov
 The author of the original paper suggests that a reference with ``NC_025138.1`` NCBI accession number.
 
 
-We find mapping reads number with using ``samtools view -F 4`` command. As you can see in the table below, ``NC_025175.1`` plasmid has more mapping reads than ``NC_025138.1`` plasmid comparing to both library. The difference between the number of mapping reads is ``243443`` for *Escherichia coli* (F5) and ``165817`` for *Citrobacter freundii* (F20).
+We find mapping reads number with using ``samtools view -F 4`` command. As you can see in the table below, ``NC_025175.1`` plasmid has more mapping reads than ``NC_025138.1`` plasmid comparing to both libraries. The difference between the number of mapping reads is **243443** for *Escherichia coli* (F5) and **165817** for *Citrobacter freundii* (F20).
 
 .. list-table:: Number of Mapping Reads with Best Candidates
    :widths: 25 25 25
