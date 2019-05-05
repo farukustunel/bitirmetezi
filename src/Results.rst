@@ -90,7 +90,7 @@ We aligned our read with ``NCBI RefSeq Database`` plasmids. You can see the tabl
      - 1698
 
 
-The summary of the results are listed in the below table. We put a threshold for the mapping reads number which is ``1000```. We use this number because we want to clear results. The threshold can be changed from the person who wants to follow this protocol. Also, we decided that at least half of the reference genome should be covered by our reads. Hence, the threshold for the breadth of coverage is ``50%``.
+The summary of the results is listed in the below table. We put a threshold for the mapping reads number which is ``1000```. We use this number because we want to clear results. The threshold can be changed from the person who wants to follow this protocol. Also, we decided that at least half of the reference genome should be covered by our reads. Hence, the threshold for the breadth of coverage is ``50%``.
 
 .. list-table:: Coverage Statistics
    :widths: 25 25 25
@@ -107,12 +107,12 @@ The summary of the results are listed in the below table. We put a threshold for
      - 135    
      - 36 
 
-But, this results can be interpereted wrongly. Because, we do not know the answers of following questions. 
+But, these results can be interpreted wrongly. Because we do not know the answers of the following questions. 
 
-1. Are the mapped reads seperated whole genome? 
+1. Are the mapped reads separated the whole genome? 
 2. Are the reads only mapped with particular regions of reference plasmid?
 
-The breadth of coverage results can gives us the answers of questions listed above.
+The breadth of coverage results can give us the answers of questions listed above.
 
 .. list-table:: Top 5 Best Candidates
    :widths: 25 25 25
@@ -139,4 +139,32 @@ The breadth of coverage results can gives us the answers of questions listed abo
      - 60.1557%
       
 
-The author of the original paper suggest that a reference with ``NC_025138.1`` NCBI accession number.
+The author of the original paper suggests that a reference with ``NC_025138.1`` NCBI accession number.
+
+
+We find mapping reads number with using ``samtools view -F 4`` command. As you can see in the table below, ``NC_025175.1`` plasmid has more mapping reads than ``NC_025138.1`` plasmid comparing to both library. The difference between the number of mapping reads is ``243443`` for *Escherichia coli* (F5) and ``165817`` for *Citrobacter freundii* (F20).
+
+.. list-table:: Number of Mapping Reads with Best Candidates
+   :widths: 25 25 25
+   :header-rows: 1
+   :align: left
+
+   * - Library
+     - Accession
+     - Number of Mapping Reads
+   * - *Escherichia coli* (F5)
+     - NC_025175.1  
+     - 277167
+   * - *Citrobacter freundii* (F20)
+     - NC_025175.1  
+     - 187823
+   * - *Escherichia coli* (F5)
+     - NC_025138.1  
+     - 33724
+   * - *Citrobacter freundii* (F20)
+     - NC_025138.1  
+     - 22006
+  
+
+
+  
