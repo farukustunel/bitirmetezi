@@ -84,6 +84,13 @@ Also, you can see the comparasion of the raw reads and the trimmed reads in the 
    Number Of Reads Before and After Trimming
 
 
+In the figure below, you can see the read lengths before and after trimming in both libraries. Mostly, the reads are conserved with the length of 250.
+
+.. figure:: ../_static/Read_length_hist.png
+   :align: center
+   :figclass: align-center
+
+
 In the following figure, you can see quality values for each position in the reads with BoxWhisker type plots. Before trimming process, some reads inside the range of reasonable quality (orange) in both libraries. Trimming process eleminate these reads and our reads inside the range of good quality (green) only.
 
 
@@ -94,7 +101,8 @@ In the following figure, you can see quality values for each position in the rea
     FastQC Per Base Sequence Quality BoxWhisker Plots Comparasion
 
 
-In the figure below, you can see the GC content distribution over all sequences in both libraries. We expect that to see a roughly normal distribution but, some reads have lower mean GC content and some other reads have higher mean GC content.
+In the coming figure, you can see the GC content distribution over all sequences in both libraries. We expect that to see a roughly normal distribution but, some reads have lower mean GC content and some other reads have higher mean GC content.
+
 
 .. figure:: ../_static/per-seq-GC-content.png
     :align: center
@@ -108,7 +116,7 @@ We aligned our reads with ``NCBI RefSeq Database`` plasmids. You can see in the 
 .. list-table:: Number of NCBI RefSeq Records
    :widths: 25 25 
    :header-rows: 1
-   :align: left
+   :align: center
 
    * - File Name
      - Number of Recors
