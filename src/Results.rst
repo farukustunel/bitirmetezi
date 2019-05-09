@@ -32,40 +32,47 @@ For *Escherichia coli* library, ``trimmomatic`` drops **443** reads for forward 
 
 
 .. list-table:: Statistics After Trimming
-   :widths: 25 25 25
+   :widths: 25 25 25 25
    :header-rows: 1
    :align: left
 
    * - File Name
-     - Number of Reads
-     - Number of Bases
-   * - F5_forward_paired
+     - F5 Reads
+     - F20 Reads
+     - F20/F5
+   * - forward_paired
      - 163188
-     - 35749448
-   * - F5_forward_unpaired
+     - 119552
+     - 73.26%
+   * - forward_unpaired
      - 8086
-     - 1514545
-   * - F5 forward dropped
-     - 443
-     - NA
-   * - F5_reverse_paired
-     - 163188
-     - 34123007
-   * - F5_reverse_unpaired
-     - 135
-     - 21546
-   * - F20_forward_paired
-     - 119552
-     - 25955781
-   * - F20_forward_unpaired
      - 5691
-     - 1059660
-   * - F20_reverse_paired
+     - 70.37%
+   * - forward dropped
+     - **443**
+     - **321**
+     - **72.26%**
+   * - reverse_paired
+     - 163188
      - 119552
-     - 24575680
-   * - F20_reverse_unpaired
+     - 73.26%
+   * - reverse_unpaired
+     - 135
      - 86
-     - 11870
+     - 63.31%
+   * - reverse dropped
+     - **8394**
+     - **5926**
+     - **70.59%**
+   * - Total Reads After Trimming
+     - 334597
+     - 244881
+     - 73.19%
+   * - Total Reads
+     - 343434
+     - 251128
+     - 73.12%
+  
 
 
 Also, you can see the comparasion of the raw reads and the trimmed reads in the histogram below.
@@ -74,12 +81,59 @@ Also, you can see the comparasion of the raw reads and the trimmed reads in the 
    :align: left
 
 
+.. subfigstart::
+
+.. _fig-F5-raw-qual:
+
+.. figure:: _static/F5-raw-qual.png
+    :alt: F5 raw reads quality
+    :width: 90%
+    :align: center
+    
+    F5 raw reads quality
+
+
+.. _fig-F5-trimmed-qual:
+
+.. figure:: _static/F5-trimmed-qual.png
+    :alt: F5 trimmed reads quality
+    :width: 90%
+    :align: center
+    
+    F5 trimmed reads quality
+
+
+.. _fig-F20-raw-qual:
+
+.. figure:: _static/F20-raw-qual.png
+    :alt: F20 raw reads quality
+    :width: 90%
+    :align: center
+    
+    F20 raw reads quality
+
+
+.. _fig-F20-trimmed-qual:
+
+.. figure:: _static/F20-trimmed-qual.png
+    :alt: F20 trimmed reads quality
+    :width: 90%
+    :align: center
+    
+    F20 trimmed reads quality
+
+.. subfigend::
+    :width: 0.30
+    :alt: FastQC Quality Plots
+    :label: FastQC Per Base Sequence Quality Comparasion
+    
+
 We aligned our reads with ``NCBI RefSeq Database`` plasmids. You can see in the table below the total number of records of ``NCBI RefSeq Database`` are **15076**.
 
 .. list-table:: Number of NCBI RefSeq Records
    :widths: 25 25 
    :header-rows: 1
-   :align: right
+   :align: left
 
    * - File Name
      - Number of Recors
@@ -147,29 +201,33 @@ The breadth of coverage results give us the answers of questions listed above. T
       
 We choose the plasmid with higher breadth of coverage (``NC_025175.1``) for further study. We also included in this study the plasmid ``NC_025138.1``, that was suggested by one of the authors of the original paper, who also isolated the samples we study.
 
-
 We find the number of mapping reads using ``samtools view -F 4`` command. As you can see in the table below, more reads map to the plasmid ``NC_025175.1``  than to ``NC_025138.1``, in both libraries. The difference between the number of mapping reads is **243443** for *Escherichia coli* (F5) and **165817** for *Citrobacter freundii* (F20).
 
 .. list-table:: Number of Mapping Reads with Best Candidates
-   :widths: 25 25 25
+   :widths: 25 25 25 25
    :header-rows: 1
    :align: left
 
    * - Library
      - Accession
      - Number of Mapping Reads
+     - Total Reads After Trimming/Number of Mapping Reads
    * - *Escherichia coli* (F5)
      - NC_025175.1  
      - 277167
+     - 82.84%
    * - *Escherichia coli* (F5)
      - NC_025138.1  
      - 33724
+     - 10.08%
    * - *Citrobacter freundii* (F20)
      - NC_025175.1  
      - 187823
+     - 76.70%
    * - *Citrobacter freundii* (F20)
      - NC_025138.1  
      - 22006
+     - 8.99%
   
 
 
