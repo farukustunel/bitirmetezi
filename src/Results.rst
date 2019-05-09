@@ -77,56 +77,31 @@ For *Escherichia coli* library, ``trimmomatic`` drops **443** reads for forward 
 
 Also, you can see the comparasion of the raw reads and the trimmed reads in the histogram below.
 
-.. image:: ../_static/numberofreads.png
-   :align: left
+.. figure:: ../_static/numberofreads.png
+   :align: center
+   :figclass: align-center
+   
+   Number Of Reads Before and After Trimming
 
 
-.. subfigstart::
+In the following figure, you can see quality values for each position in the reads with BoxWhisker type plots. Before trimming process, some reads inside the range of reasonable quality (orange) in both libraries. Trimming process eleminate these reads and our reads inside the range of good quality (green) only.
 
-.. _fig-F5-raw-qual:
 
-.. figure:: _static/F5-raw-qual.png
-    :alt: F5 raw reads quality
-    :width: 90%
+.. figure:: ../_static/per-seq-base-qual.png
     :align: center
-    
-    F5 raw reads quality
+    :figclass: align-center
+
+    FastQC Per Base Sequence Quality BoxWhisker Plots Comparasion
 
 
-.. _fig-F5-trimmed-qual:
+In the figure below, you can see the GC content distribution over all sequences in both libraries. We expect that to see a roughly normal distribution but, some reads have lower mean GC content and some other reads have higher mean GC content.
 
-.. figure:: _static/F5-trimmed-qual.png
-    :alt: F5 trimmed reads quality
-    :width: 90%
+.. figure:: ../_static/per-seq-GC-content.png
     :align: center
-    
-    F5 trimmed reads quality
+    :figclass: align-center
 
+    FastQC Per Sequence GC Content Plots Comparasion
 
-.. _fig-F20-raw-qual:
-
-.. figure:: _static/F20-raw-qual.png
-    :alt: F20 raw reads quality
-    :width: 90%
-    :align: center
-    
-    F20 raw reads quality
-
-
-.. _fig-F20-trimmed-qual:
-
-.. figure:: _static/F20-trimmed-qual.png
-    :alt: F20 trimmed reads quality
-    :width: 90%
-    :align: center
-    
-    F20 trimmed reads quality
-
-.. subfigend::
-    :width: 0.30
-    :alt: FastQC Quality Plots
-    :label: FastQC Per Base Sequence Quality Comparasion
-    
 
 We aligned our reads with ``NCBI RefSeq Database`` plasmids. You can see in the table below the total number of records of ``NCBI RefSeq Database`` are **15076**.
 
@@ -170,7 +145,7 @@ The summary of the results is listed in the below table. We put a threshold for 
 
 These results can be interpreted wrongly, because we do not know the answers to the following questions:
 
-1. Are the mapped reads separated in the  plasmid? 
+1. Are the mapped reads separated in the plasmid? 
 2. Are the reads only mapped to particular regions of the reference plasmid?
 
 The breadth of coverage results give us the answers of questions listed above. The following table shows the plasmids in the database with higher breadth of coverage.
