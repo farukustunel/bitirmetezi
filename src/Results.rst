@@ -90,6 +90,8 @@ In the figure below, you can see the read lengths before and after trimming in b
    :align: center
    :figclass: align-center
 
+   Histogram of Reads Length 
+
 
 In the following figure, you can see quality values for each position in the reads with BoxWhisker type plots. Before trimming process, some reads inside the range of reasonable quality (orange) in both libraries. Trimming process eleminate these reads and our reads inside the range of good quality (green) only.
 
