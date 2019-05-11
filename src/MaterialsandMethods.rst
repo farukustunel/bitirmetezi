@@ -47,7 +47,13 @@ Trimmomatic produces four fastq files: two for paired forward and reverse reads,
 Quality Control
 ---------------
 
-Say something about FastQC
+After the trimming process, we want to compare the files we get with our raw data. We used ``FastQC`` quality control tool for this purpose. This program can be run in two ways. Either as a graphical user program that you can dynamically upload your files with ``Fastq`` format and you can see the results easily. Or, you can use command-line as a non-graphical program. Both ways, ``FastQC`` produces ``HTML`` files as an output that contains basic statistics, per base and sequence quality, per base and sequence GC content, sequence length distribution, sequence duplication levels, over-represented sequences, K-mer content et cetera.
+
+We used ``FastQC`` as a graphical user program on windows operating system. You can run ``FastQC`` with the following steps, easily.
+
+1. Click ``run_fastqc.bat`` file. This will open GUI (Graphical User Interface) for ``FastQC``.
+2. Click ``File -> Open...`` or just simply push ``Ctrl + O`` from your keyboard. Choose your file and the program starts automatically.
+3. Click ``File -> Save report...`` or push ``Ctrl + S`` from your keyboard. This will save your results as an ``HTML`` output.
 
 -------
 Mapping
@@ -141,6 +147,134 @@ In the first line, ``bwa`` creates an index for the reference file. In the secon
    bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' [Reference plasmid].fasta [Forward fastq file] [Reverse fastq file] > [Output file].sam
    samtools fixmate -O bam [Output file].sam [Fixmate output file].bam
    samtools sort -O bam -o [Sorted fixmate output file].bam [Fixmate output file].bam
+
+^^^^^^^^^^^^^^^
+Filtering Reads
+^^^^^^^^^^^^^^^
+
+Filtering reads is an important process if you want to assemble your reads successfully. Firstly, we merge 3 different ``fixmatesorted.bam`` files that we got alignment process with using ``samtools merge`` command. You can see the code in the below.
+
+..  code-block:: bash
+    :linenos:
+
+    samtools merge [merged].bam [fixmatesorted1].bam [fixmatesorted2].bam [fixmatesorted3].bam
+
+..  warning::
+    
+    You should indicate output file as first. Otherwise, you will get an error.
+
+..  note::
+
+    We used 3 different bam files. Because ``trimmomatic`` produced 4 different outputs and in the ``Mapping``process two of them are combined as a paired file. Hence, we got 3 bam files like ``pairedfixmatesorted``, ``forward-unpairedfixmatesorted``, ``reverse-unpairedfixmatesorted``.
+
+
+..  note::
+
+    We merged ``BAM`` files in order to keep in mind all reads.
+
+
+After merging ``BAM`` files. We want to see depth results for each position in the plasmid genome. ``samtools mpileup`` gives detail output for this. You can look at ``mpileup`` output from the given list below. Each line consists of 5 ``tab-separated`` columns. Column 6 is optional.
+
+1. Sequence name
+2. Position (starting from 1)
+3. Reference nucleotide at that position
+4. Depth of coverage
+5. Bases at that position from aligned reads
+6. Phred Quality of those bases (OPTIONAL).
+
+We need only column ``1,2,4``. These columns are sequence name, position and depth of coverage, respectively. We combine ``samtools mpileup`` with ``awk`` command to carry out this purpose. 
+
+
+.. code-block:: bash
+   :linenos:
+
+   samtools mpileup [merged].bam | awk '{print $1"\t"$2"\t"$4}' > [depth].txt
+
+
+``[depth].txt`` file allows us to filter low and high coverage regions on the plasmid genome. We parsed the file using following python script and we create a new filtered fastq file.
+
+
+.. code-block:: python
+   :linenos:
+
+   from Bio import SeqIO
+   import pandas as pd
+   import matplotlib as plt
+   import numpy as np
+
+   records = [x for x in SeqIO.parse("[reference].gb", "genbank")]
+
+   df=pd.read_csv('[depth].txt',sep='\t', header=None, names=["Ref","Position","Depth"])
+
+   def before_or_after(x,low, high):
+       if x < low:
+           return(-1)
+       elif x > high:
+           return(1)
+       else:
+           return(0)
+
+   def inside(regions, x0, x1):
+       for low, high in regions:
+           a = before_or_after(x0, low, high)
+           b = before_or_after(x1, low, high)
+           if a != b or (a==0 and b==0):
+               return((low,high))
+       return None
+
+
+   zero_region = [(y,x) for x,y in zip(df.Position[1:],df.Position[:-1]) if (x-y)>1]
+   
+   l = df.Depth.quantile(0.25)
+   u = df.Depth.quantile(0.75)
+   iqr = u-l
+   lower_limit = l-1.5*iqr
+   upper_limit = u+1.5*iqr
+
+   a = df.Depth < lower_limit
+   b = [df.Position[i] for i in range(1,len(a)) if a[i-1]!=a[i]]
+   b.insert(0,1)
+
+   low_cover_region=[(b[i],b[i+1]) for i in range(len(b)-1) if i%2==0 and b[i+1]-b[i]> 50]
+
+   c = df.Depth > upper_limit # u+1.5*iqr
+   d = [df.Position[i] for i in range(1,len(c)) if c[i-1]!=c[i]]
+
+   high_cover_region=[(d[i],d[i+1]) for i in range(len(d)-1) if i%2==0 and d[i+1]-d[i]> 50]
+
+   for seq_record in records:
+       for seq_feature in seq_record.features:
+           if seq_feature.type=="CDS":
+               loc=inside([zero, low and high regions], seq_feature.location.start,seq_feature.location.end)
+               if loc is not None:
+                   print(loc[0], loc[1], seq_feature.location, seq_feature.qualifiers.get("product", ["???"])[0])
+
+   with open("reads_to_keep.txt", "w") as outfile:
+       with open("[reference].sam","rt") as sam:
+           for line in sam:
+               if line[0]=="@":
+                   continue
+               cols = line.strip().split()
+               read_name = cols[0]
+               start = int(cols[3])
+               if start==0:
+                   continue
+               end = start + len(cols[9])
+               loc = inside(high_cover_region, start, end)
+               if loc is None:
+                   print(read_name, file=outfile)
+
+
+    input_file = sys.stdin
+	id_file = sys.argv[1]
+	output_file = sys.stdout
+	wanted = set(line.rstrip("\n").split(None, 1)[0] for line in open(id_file))
+	print("Found %i unique identifiers in %s" % (len(wanted), id_file),file=sys.stderr)
+	records = (r for r in SeqIO.parse(input_file, "fastq") if r.id in wanted)
+	count = SeqIO.write(records, output_file, "fastq")
+	print("Saved %i records from %s to %s" % (count, "input_file", "output_file"), file=sys.stderr)
+	if count < len(wanted):
+    	print("Warning %i IDs not found in %s" % (len(wanted) - count, "input_file"), file=sys.stderr)
 
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
