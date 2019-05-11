@@ -148,9 +148,9 @@ In the first line, ``bwa`` creates an index for the reference file. In the secon
    samtools fixmate -O bam [Output file].sam [Fixmate output file].bam
    samtools sort -O bam -o [Sorted fixmate output file].bam [Fixmate output file].bam
 
-^^^^^^^^^^^^^^^
+---------------
 Filtering Reads
-^^^^^^^^^^^^^^^
+---------------
 
 Filtering reads is an important process if you want to assemble your reads successfully. Firstly, we merge 3 different ``fixmatesorted.bam`` files that we got alignment process with using ``samtools merge`` command. You can see the code in the below.
 
@@ -165,7 +165,7 @@ Filtering reads is an important process if you want to assemble your reads succe
 
 ..  note::
 
-    We used 3 different bam files. Because ``trimmomatic`` produced 4 different outputs and in the ``Mapping``process two of them are combined as a paired file. Hence, we got 3 bam files like ``pairedfixmatesorted``, ``forward-unpairedfixmatesorted``, ``reverse-unpairedfixmatesorted``.
+    We used 3 different bam files. Because ``trimmomatic`` produced 4 different outputs and in the ``Mapping`` process two of them are combined as a paired file. Hence, we got 3 bam files like ``pairedfixmatesorted``, ``forward-unpairedfixmatesorted``, ``reverse-unpairedfixmatesorted``.
 
 
 ..  note::
@@ -222,7 +222,6 @@ We need only column ``1,2,4``. These columns are sequence name, position and dep
                return((low,high))
        return None
 
-
    zero_region = [(y,x) for x,y in zip(df.Position[1:],df.Position[:-1]) if (x-y)>1]
    
    l = df.Depth.quantile(0.25)
@@ -242,13 +241,6 @@ We need only column ``1,2,4``. These columns are sequence name, position and dep
 
    high_cover_region=[(d[i],d[i+1]) for i in range(len(d)-1) if i%2==0 and d[i+1]-d[i]> 50]
 
-   for seq_record in records:
-       for seq_feature in seq_record.features:
-           if seq_feature.type=="CDS":
-               loc=inside([zero, low and high regions], seq_feature.location.start,seq_feature.location.end)
-               if loc is not None:
-                   print(loc[0], loc[1], seq_feature.location, seq_feature.qualifiers.get("product", ["???"])[0])
-
    with open("reads_to_keep.txt", "w") as outfile:
        with open("[reference].sam","rt") as sam:
            for line in sam:
@@ -264,17 +256,16 @@ We need only column ``1,2,4``. These columns are sequence name, position and dep
                if loc is None:
                    print(read_name, file=outfile)
 
-
-    input_file = sys.stdin
-	id_file = sys.argv[1]
-	output_file = sys.stdout
-	wanted = set(line.rstrip("\n").split(None, 1)[0] for line in open(id_file))
-	print("Found %i unique identifiers in %s" % (len(wanted), id_file),file=sys.stderr)
-	records = (r for r in SeqIO.parse(input_file, "fastq") if r.id in wanted)
-	count = SeqIO.write(records, output_file, "fastq")
-	print("Saved %i records from %s to %s" % (count, "input_file", "output_file"), file=sys.stderr)
-	if count < len(wanted):
-    	print("Warning %i IDs not found in %s" % (len(wanted) - count, "input_file"), file=sys.stderr)
+   input_file = sys.stdin
+   id_file = sys.argv[1]
+   output_file = sys.stdout
+   wanted = set(line.rstrip("\n").split(None, 1)[0] for line in open(id_file))
+   print("Found %i unique identifiers in %s" % (len(wanted), id_file),file=sys.stderr)
+   records = (r for r in SeqIO.parse(input_file, "fastq") if r.id in wanted)
+   count = SeqIO.write(records, output_file, "fastq")
+   print("Saved %i records from %s to %s" % (count, "input_file", "output_file"), file=sys.stderr)
+   if count < len(wanted):
+       print("Warning %i IDs not found in %s" % (len(wanted) - count, "input_file"), file=sys.stderr)
 
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
