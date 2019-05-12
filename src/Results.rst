@@ -223,10 +223,83 @@ After choosing the best candidate, we want see the depth of coverage for each po
 
     Depth of Coverage for Each Position
 
+In the below table, we introduced the exact positions that are not covered from our reads.
 
-Some genes that are not covered from our reads. In the following table, you can see which genes that are not covered from our reads.
+.. list-table:: Positions With 0 Depth For NC_025175.1
+   :widths: 25 10 10 10
+   :header-rows: 1
+   :align: left
 
-.. list-table:: Genes That Are Not Covered From Our Read
+   * - Library
+     - Position Start
+     - Position End
+     - End-Start
+   * - *Escherichia coli* (F5)
+     - 8061 
+     - 8417
+     - 356
+   * - *Escherichia coli* (F5)
+     - 87006  
+     - 89274
+     - 2268
+   * - *Escherichia coli* (F5)
+     - 110447 
+     - 111986
+     - 1539
+   * - *Escherichia coli* (F5)
+     - 132435  
+     - 132485
+     - 50
+   * - *Escherichia coli* (F5)
+     - 132738  
+     - 132968
+     - 230
+   * - *Escherichia coli* (F5)
+     - 147876  
+     - 154647
+     - 6771
+   * - *Citrobacter freundii* (F20)
+     - 8062 
+     - 8417
+     - 355
+   * - *Citrobacter freundii* (F20)
+     - 87006 
+     - 89274
+     - 2268
+   * - *Citrobacter freundii* (F20)
+     - 110447 
+     - 110885
+     - 438
+   * - *Citrobacter freundii* (F20)
+     - 110903 
+     - 111987
+     - 1084
+   * - *Citrobacter freundii* (F20)
+     - 132738 
+     - 132896
+     - 158
+   * - *Citrobacter freundii* (F20)
+     - 132922 
+     - 132964
+     - 42
+   * - *Citrobacter freundii* (F20)
+     - 139942 
+     - 139959
+     - 17
+   * - *Citrobacter freundii* (F20)
+     - 144620 
+     - 144652
+     - 32
+   * - *Citrobacter freundii* (F20)
+     - 147876 
+     - 154650
+     - 6774
+
+
+Also, some genes that are not covered from our reads. In the following table, you can see which genes that are not covered from our reads.
+
+
+.. list-table:: Genes That Are Not Covered From Our Reads
    :widths: 30 25 12 25 40
    :header-rows: 1
    :align: left
@@ -236,93 +309,104 @@ Some genes that are not covered from our reads. In the following table, you can 
      - Strand
      - Locus Tag
      - Product
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1  
      - (-)
      - D616_p149014
      - hypothetical protein
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1 
      - (+)
      - D616_p149136
      - IS629 transposase
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1  
      - (+)
      - D616_p149137
      - Mobile element protein
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1 
      - (+)
      - D616_p149138
      - hypothetical protein
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1 
      - (+)
      - D616_p149139
      - Retron-type RNA-directed DNA polymerase
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1
      - (-)
      - D616_p149173
      - AroG 
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1
      - (-)
      - D616_p149174
      - hypothetical protein 
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1
      - (-)
      - D616_p149207
-     - hypothetical protein 
-   * - *Escherichia coli* (F5)
+     - hypothetical protein
+   * - *Citrobacter freundii* (F20)
+     - NC_025175.1
+     - (-)
+     - D616_p149217
+     - Relaxase /helicase
+   * - *Citrobacter freundii* (F20)
+     - NC_025175.1
+     - (+)
+     - D616_p149224
+     - Mercuric resistance operon coregulator, MerD
+   * - Both
      - NC_025175.1
      - (+)
      - D616_p149228
      - TniB NTP-binding protein 
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1
      - (+)
      - D616_p149229
      - hypothetical protein 
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1
      - (-)
      - D616_p149230
      - macrolide 2-phosphotransferase, mph(B) 
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1
      - (-)
      - D616_p149231
      - hydrolase, alpha/beta fold family 
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1
      - (-)
      - D616_p149232
      - Transcriptional regulator, TetR family 
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1
      - (-)
      - D616_p149233
      - hypothetical protein 
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1
      - (-)
      - D616_p149234
      - Beta-lactamase 
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1
      - (+)
      - D616_p149235
      - hypothetical protein 
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1
      - (-)
      - D616_p149236
      - GGDEF family protein 
-   * - *Escherichia coli* (F5)
+   * - Both
      - NC_025175.1
      - (+)
      - D616_p149237
-     - TniB NTP-binding protein 
+     - TniB NTP-binding protein
+    
