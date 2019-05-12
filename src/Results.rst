@@ -226,7 +226,7 @@ After choosing the best candidate, we want see the depth of coverage for each po
 In the below table, we introduced the exact positions that are not covered from our reads.
 
 .. list-table:: Positions With 0 Depth For NC_025175.1
-   :widths: 25 10 10 10
+   :widths: 15 10 10 10
    :header-rows: 1
    :align: left
 
