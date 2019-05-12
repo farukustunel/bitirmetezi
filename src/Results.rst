@@ -216,4 +216,103 @@ We find the number of mapping reads using ``samtools view -F 4`` command. As you
   
 
 
-  
+.. list-table:: Genes That Are Not Covered From Our Read
+   :widths: 25 25 25 25 25
+   :header-rows: 1
+   :align: left
+
+   * - Library
+     - Accession
+     - Strand
+     - Locus Tag
+     - Product
+   * - *Escherichia coli* (F5)
+     - NC_025175.1  
+     - (-)
+     - D616_p149014
+     - hypothetical protein
+   * - *Escherichia coli* (F5)
+     - NC_025175.1 
+     - (+)
+     - D616_p149136
+     - IS629 transposase
+   * - *Escherichia coli* (F5)
+     - NC_025175.1  
+     - (+)
+     - D616_p149137
+     - Mobile element protein
+   * - *Escherichia coli* (F5)
+     - NC_025175.1 
+     - (+)
+     - D616_p149138
+     - hypothetical protein
+   * - *Escherichia coli* (F5)
+     - NC_025175.1 
+     - (+)
+     - D616_p149139
+     - Retron-type RNA-directed DNA polymerase
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (-)
+     - D616_p149173
+     - AroG 
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (-)
+     - D616_p149174
+     - hypothetical protein 
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (-)
+     - D616_p149207
+     - hypothetical protein 
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (+)
+     - D616_p149228
+     - TniB NTP-binding protein 
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (+)
+     - D616_p149229
+     - hypothetical protein 
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (-)
+     - D616_p149230
+     - macrolide 2-phosphotransferase, mph(B) 
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (-)
+     - D616_p149231
+     - hydrolase, alpha/beta fold family 
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (-)
+     - D616_p149232
+     - Transcriptional regulator, TetR family 
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (-)
+     - D616_p149233
+     - hypothetical protein 
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (-)
+     - D616_p149234
+     - Beta-lactamase 
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (+)
+     - D616_p149235
+     - hypothetical protein 
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (-)
+     - D616_p149236
+     - GGDEF family protein 
+   * - *Escherichia coli* (F5)
+     - NC_025175.1
+     - (+)
+     - D616_p149237
+     - TniB NTP-binding protein 
