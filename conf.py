@@ -105,7 +105,7 @@ htmlhelp_basename = 'FinalProjectdoc'
 
 # -- Options for LaTeX output ------------------------------------------------
 
-latex_elements = { "11pt"
+latex_elements = { 'pointsize':'11pt'
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
