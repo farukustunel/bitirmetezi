@@ -217,7 +217,7 @@ We find the number of mapping reads using ``samtools view -F 4`` command. As you
 
 
 .. list-table:: Genes That Are Not Covered From Our Read
-   :widths: 30 25 10 25 40
+   :widths: 30 25 12 25 40
    :header-rows: 1
    :align: left
 
