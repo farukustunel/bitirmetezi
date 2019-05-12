@@ -106,10 +106,8 @@ htmlhelp_basename = 'FinalProjectdoc'
 # -- Options for LaTeX output ------------------------------------------------
 
 latex_elements = { 'pointsize':'11pt', 'fontpkg': r'''
-\setmainfont{DejaVu Serif}
-\setsansfont{DejaVu Sans}
-\setmonofont{DejaVu Sans Mono}
-''','papersize': 'letterpaper'
+\\usepackage{mathptmx}
+''','papersize': 'letterpaper','figure_align':'H'
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
