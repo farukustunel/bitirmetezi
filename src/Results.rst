@@ -215,6 +215,16 @@ We find the number of mapping reads using ``samtools view -F 4`` command. As you
      - 8.99%
   
 
+After choosing the best candidate, we want see the depth of coverage for each position.
+
+.. figure:: ../_static/depth.png
+    :align: center
+    :figclass: align-center
+
+    Depth of Coverage for Each Position
+
+
+Some genes that are not covered from our reads. In the following table, you can see which genes that are not covered from our reads.
 
 .. list-table:: Genes That Are Not Covered From Our Read
    :widths: 30 25 12 25 40
