@@ -268,13 +268,13 @@ We need only column ``1,2,4``. These columns are sequence name, position and dep
        print("Warning %i IDs not found in %s" % (len(wanted) - count, "input_file"), file=sys.stderr)
 
 
-^^^^^^^^^^^^^^
+--------------
 Phrap Assembly 
-^^^^^^^^^^^^^^
+--------------
 
---------------------
+^^^^^^^^^^^^^^^^^^^^
 Assembly Preparation
---------------------
+^^^^^^^^^^^^^^^^^^^^
 
 Phrap assembly tool takes fasta file and quality file as an input. So, we need to create these file from fastq file which we filtered in the previous step. The following bash code carry out this process. ``Fastq`` files consists of 4 lines per sequence.
 
@@ -291,9 +291,9 @@ In the first line of code, we select first and second column to create a ``fasta
    cat [filtered].fastq | paste - - - - | sed 's/^@/>/g'| cut -f1-2 | tr '\t' '\n' > [filtered].fasta
    cat [filtered].fastq | paste - - - - | sed 's/^@/>/g'| cut -f1-4 | tr '\t' '\n' > [filtered].qual
 
-----------------
+^^^^^^^^^^^^^^^^
 Assembly Process
-----------------
+^^^^^^^^^^^^^^^^
 
 To start the assembly with using ``Phrap``, we need to run the code in the below. With the ``-ace`` parameter, we will get ``ace`` files for the output.
 
@@ -310,9 +310,9 @@ To start the assembly with using ``Phrap``, we need to run the code in the below
 
 .. _Quast:
 
--------------------
+^^^^^^^^^^^^^^^^^^^
 Assembly Statistics
--------------------
+^^^^^^^^^^^^^^^^^^^
 
 For the general statistics we want to see, we used ``Quast``. It is stand for Quality Assessment Tool for Genome Assemblies. The code we used for this is given below.
 
@@ -322,13 +322,13 @@ For the general statistics we want to see, we used ``Quast``. It is stand for Qu
    quast.py [contigs].fasta -o [Output folder]
 
 
-^^^^^^^^^^^^^^^
+---------------
 SPAdes Assembly
-^^^^^^^^^^^^^^^
+---------------
 
---------------------
+^^^^^^^^^^^^^^^^^^^^
 Assembly Preparation
---------------------
+^^^^^^^^^^^^^^^^^^^^
 
 After the first assembly with ``Phrap``, we want to extend our contigs with the reads that we did not use in the first. For accomplish this we used ``samtools view`` with ``f`` parameter. You can look at the general code in the below.
 
@@ -338,9 +338,9 @@ After the first assembly with ``Phrap``, we want to extend our contigs with the 
    samtools view -f 4 [Reference Alignment fixmatesorted].bam
 
 
-----------------
+^^^^^^^^^^^^^^^^
 Assembly Process
-----------------
+^^^^^^^^^^^^^^^^
 
 We used ``SPAdes`` as a second assembler. With the ``--trusted-contig`` parameter, we used contigs that we got in the first assembly as a base and we try to extend this contigs with we did not use before.
 
@@ -350,9 +350,9 @@ We used ``SPAdes`` as a second assembler. With the ``--trusted-contig`` paramete
    spades.py -o [Output folder] --only-assembler -1 [Forward fastq file] -2 [Reverse fastq file] --s1 [Singles 1] --s2 [Singles 2] --trusted-contigs [contigs].fasta
 
 
--------------------
+^^^^^^^^^^^^^^^^^^^
 Assembly Statistics
--------------------
+^^^^^^^^^^^^^^^^^^^
 
 We used ``Quast`` again for the statistics about assembly. See :ref:`Quast`.
 
