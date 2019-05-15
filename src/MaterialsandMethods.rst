@@ -268,188 +268,93 @@ We need only column ``1,2,4``. These columns are sequence name, position and dep
        print("Warning %i IDs not found in %s" % (len(wanted) - count, "input_file"), file=sys.stderr)
 
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Creating new fastq files contain only mapped reads with best candidates
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^
+Phrap Assembly 
+^^^^^^^^^^^^^^
 
-• Getting read id's for creating new fastq files for NC_025138.1
+--------------------
+Assembly Preparation
+--------------------
+
+Phrap assembly tool takes fasta file and quality file as an input. So, we need to create these file from fastq file which we filtered in the previous step. The following bash code carry out this process. ``Fastq`` files consists of 4 lines per sequence.
+
+1. First line starts with ``@`` character and this is followed by sequence identifier.
+2. Second line contains the sequences that is belong to the read.
+3. Third line mostly contains only ``+`` sign to separate raw sequences and quality scores of each read.
+4. Fourth line consists of quality scores of reads correspond to the sequences in second line.
+
+In the first line of code, we select first and second column to create a ``fasta`` file. Also, we replaced ``@`` symbol with ``>``. In the following line, we select only first and fourth column to create a ``quality file``.
 
 .. code:: bash
-	
-	samtools view F5-NC_025138.1fixmatesorted.bam |cut -f 1|uniq |head -300000|sort -u > F5-NC_025138.1fastqid.txt
-	samtools view F20-NC_025138.1fixmatesorted.bam |cut -f 1|uniq |head -205000|sort -u > F20-NC_025138.1fastqid.txt
-
-
-• Getting read id's for creating new fastq files for NC_025175.1
-
-.. code:: bash
-
-	samtools view F5-NC_025175.1fixmatesorted.bam |cut -f 1|uniq |head -200000|sort -u > F5-NC_025175.1fastqid.txt
-	samtools view F20-NC_025175.1fixmatesorted.bam |cut -f 1|uniq |head -200000|sort -u > F20-NC_025175.1fastqid.txt
-
----------------------------------------------
-Creating new fastq files with given read id's
----------------------------------------------
-
-• This python script creates new fastq files with given forward read id's.
-
-.. code-block:: python
-   :linenos:
-
-   from Bio import SeqIO
-
-   input_file = "{Forward fastq file}"
-   id_file = "{Library}-{plasmid accession}fastqid.txt"
-   output_file = "{Library}-{plasmid accession}.fastq"
-   wanted = set(line.rstrip("\n").split(None, 1)[0] for line in open(id_file))
-   print("Found %i unique identifiers in %s" % (len(wanted), id_file))
-   records = (r for r in SeqIO.parse(input_file, "fastq") if r.id in wanted)
-   count = SeqIO.write(records, output_file, "fastq")
-   print("Saved %i records from %s to %s" % (count, input_file, output_file))
-   if count < len(wanted):
-       print("Warning %i IDs not found in %s" % (len(wanted) - count, input_file))
-
-
-• This python script creates new fastq files with given reverse read id's.
-
-.. code-block:: python
-   :linenos:
+	 :linenos:
    
-   from Bio import SeqIO
+   cat [filtered].fastq | paste - - - - | sed 's/^@/>/g'| cut -f1-2 | tr '\t' '\n' > [filtered].fasta
+   cat [filtered].fastq | paste - - - - | sed 's/^@/>/g'| cut -f1-4 | tr '\t' '\n' > [filtered].qual
 
-   input_file = "{Reverse fastq file}"
-   id_file = "{Library}-{plasmid accession}fastqid.txt"
-   output_file = "{Library}-{plasmid accession}.fastq"
-   wanted = set(line.rstrip("\n").split(None, 1)[0] for line in open(id_file))
-   print("Found %i unique identifiers in %s" % (len(wanted), id_file))
-   records = (r for r in SeqIO.parse(input_file, "fastq") if r.id in wanted)
-   count = SeqIO.write(records, output_file, "fastq")
-   print("Saved %i records from %s to %s" % (count, input_file, output_file))
-   if count < len(wanted):
-       print("Warning %i IDs not found in %s" % (len(wanted) - count, input_file))
+----------------
+Assembly Process
+----------------
 
+To start the assembly with using ``Phrap``, we need to run the code in the below. With the ``-ace`` parameter, we will get ``ace`` files for the output.
 
-^^^^^^^^^^^^^^^^^^^^^^
-Assembly with Geneious
-^^^^^^^^^^^^^^^^^^^^^^
-
-• After creating new fastq files, we should do assembly. You can do assembly easily with following geneious de novo assembly tutorial. You can access the tutorial here `De novo Assembly Tutorial`_.
-
-.. _De novo Assembly Tutorial: https://www.geneious.com/tutorials/de-novo-assembly/
-
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Filtering reads with given contigs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-• After the assembly process we have ace files for each contig. Some regions in the contigs have lower depth for reference bases. We do not want those reads and we should delete them. The following python script will do the work.
-
-.. code-block:: python
+.. code:: bash
    :linenos:
 
-   import sys
-   from Bio.Sequencing import Ace
-   from Bio import SeqIO
-   import numpy as np
+   phrap -ace [Library name]
 
-   if len(sys.argv)<4:
-       print(sys.argv[0],"not enough arguments")
-       print("Usage:", sys.argv[0],"ACE input.fastq output.fastq")
-       exit(1)
 
-   cmd_name = sys.argv.pop(0)
-   input_file = sys.argv.pop(0)
-   output_file = sys.argv.pop(0)
+.. warning::
+   
+   Fasta file and quality file names should be the same. Thereby, ``Phrap`` detects the file automatically.
 
-   def parse_af(ace_file):
-       ans = {}
-   for line in open(ace_file):
-       if line.startswith("AF"):
-           _, read_id, _, pos = line.strip().split()
-           ans[read_id]=int(pos)
-   return(ans)
 
-   bad_reads = set()
+.. _Quast:
 
-   for ace_file in sys.argv:
-       assembly = Ace.read(open(ace_file))
-       contig = assembly.contigs[0]
-  	   print("%s: %d reads" % (ace_file, contig.nreads))
-   if len(contig.af)==0:
-       af = parse_af(ace_file)
-       all_reads = [(contig.reads[i].rd.name,
-        			af[contig.reads[i].rd.name],
-        			contig.reads[i].rd.padded_bases) for i in range(contig.nreads)]
-   else:
-       all_reads = [(contig.reads[i].rd.name,
-        			contig.af[i].padded_start,
-        			contig.reads[i].rd.padded_bases) for i in range(contig.nreads)]
+-------------------
+Assembly Statistics
+-------------------
 
-   depth = np.zeros(contig.nbases+1, dtype=int)
-
-   for name, start, length in all_reads:
-       for j in range(start, start + length):
-           depth[j] +=1
-
-   bad_places = (depth < (depth.mean()-3*depth.std())) | (depth>= (depth.mean()+3*depth.std()))
-
-   for name, start, length in all_reads:
-       bad_bp_in_read = np.sum(bad_places[start:(start+length)])
-       if bad_bp_in_read > length/5: # if over 20% of bp are "bad"...
-           bad_reads.add(name[:name.index("_")]) # then remember the fragment name
-
-   print("Now filtering %d bad fragments" % (len(bad_reads)))
-   records = [r for r in SeqIO.parse(input_file, "fastq") if r.id not in bad_reads]
-   count = SeqIO.write(records, output_file, "fastq")
-   print("Saved %i records from %s to %s" % (count, input_file, output_file))
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Assembly with filtered reads
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-• For NC_025138.1
+For the general statistics we want to see, we used ``Quast``. It is stand for Quality Assessment Tool for Genome Assemblies. The code we used for this is given below.
 
 .. code:: bash
+   :linenos:
 
-	## Trimming
-	
-	sickle pe -f R1-filtered.fastq -r R2-filtered.fastq -t sanger -o R1-filtered-trimmed.fastq -p R2-filtered-trimmed.fastq -s singles.fastq -q 30 -l 45
-	
-	## Assembly
-	
-	### Spades
-	
-	spades.py --careful -o SPAdes_out -1 R1-filtered-trimmed.fastq -2 R2-filtered-trimmed.fastq -s singles.fastq
-	
-	### Abyss 
-	
-	abyss-pe  k=31 name=Kmer31 in='/home/fustunel/Plasmid/geneious-2019-02-21/Sickle-2019-03-19/F20-NC_025138.1/R1-filtered-trimmed.fastq /home/fustunel/Plasmid/geneious-2019-02-21/Sickle-2019-03-19/F20-NC_025138.1/R2-filtered-trimmed.fastq' se='/home/fustunel/Plasmid/geneious-2019-02-21/Sickle-2019-03-19/F20-NC_025138.1/singles.fastq'
-	
-	## Statistics
-	
-	quast.py SPAdes_out/scaffolds.fasta -o quast-SPAdes
-	quast.py /home/fustunel/Plasmid/geneious-2019-02-21/Abyss-2019-03-19/F20-NC_025138.1/Kmer31-scaffolds.fa -o quast-Abyss
+   quast.py [contigs].fasta -o [Output folder]
 
 
-• We can generalize the code like this;
+^^^^^^^^^^^^^^^
+SPAdes Assembly
+^^^^^^^^^^^^^^^
+
+--------------------
+Assembly Preparation
+--------------------
+
+After the first assembly with ``Phrap``, we want to extend our contigs with the reads that we did not use in the first. For accomplish this we used ``samtools view`` with ``f`` parameter. You can look at the general code in the below.
 
 .. code:: bash
+   :linenos:
 
-	## Trimming
-	
-	sickle pe -f R1-filtered.fastq -r R2-filtered.fastq -t sanger -o R1-filtered-trimmed.fastq -p R2-filtered-trimmed.fastq -s singles.fastq -q 30 -l 45
-	
-	## Assembly
-	
-	### Spades
-	
-	spades.py --careful -o SPAdes_out -1 $plasmid folder path/R1-filtered-trimmed.fastq -2 $plasmid folder path/R2-filtered-trimmed.fastq -s singles.fastq
-	
-	### Abyss 
-	
-	abyss-pe  k=31 name=Kmer31 in='$plasmid folder path/R1-filtered-trimmed.fastq $plasmid folder path/R2-filtered-trimmed.fastq' se='$plasmid folder path/singles.fastq'
-	
-	## Statistics
-	
-	quast.py SPAdes_out/scaffolds.fasta -o quast-SPAdes
-	quast.py Kmer31-scaffolds.fa -o quast-Abyss
+   samtools view -f 4 [Reference Alignment fixmatesorted].bam
+
+
+----------------
+Assembly Process
+----------------
+
+We used ``SPAdes`` as a second assembler. With the ``--trusted-contig`` parameter, we used contigs that we got in the first assembly as a base and we try to extend this contigs with we did not use before.
+
+.. code:: bash
+   :linenos:
+
+   spades.py -o [Output folder] --only-assembler -1 [Forward fastq file] -2 [Reverse fastq file] --s1 [Singles 1] --s2 [Singles 2] --trusted-contigs [contigs].fasta
+
+
+-------------------
+Assembly Statistics
+-------------------
+
+We used ``Quast`` again for the statistics about assembly. See :ref:`Quast`.
+
+
+
