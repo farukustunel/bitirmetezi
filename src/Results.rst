@@ -410,3 +410,16 @@ Also, some genes that are not covered from our reads. In the following table, yo
      - D616_p149237
      - TniB NTP-binding protein
     
+
+.. figure:: ../_static/Contigs.png
+    :align: center
+    :figclass: align-center
+
+    Visualization of Contigs Assembled with SPAdes
+
+
+.. figure:: ../_static/Contigsrevcomp.png
+    :align: center
+    :figclass: align-center
+
+    Visualization of Reverse Complement Contigs Assembled with SPAdes
