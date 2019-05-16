@@ -260,6 +260,10 @@ The ``[depth].txt`` file allows us to filter high coverage regions on the plasmi
                if loc is None:
                    print(read_name, file=outfile)
 
+
+.. code-block:: python
+   :linenos:
+
    input_file = sys.stdin
    id_file = sys.argv[1]
    output_file = sys.stdout
