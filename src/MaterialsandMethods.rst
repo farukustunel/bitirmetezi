@@ -26,7 +26,7 @@ The workflow for bacterial genome assembly used in this study is shown in the fi
 Trimming
 --------
 
-• Trimming adaptors from both 5' and 3' ends of your sequences are the most crucial step for the genome assembly process. Also, getting rid of low-quality reads improves the standard of your analyzes. We used ``trimmomatic`` as a trimming tool and we performed this process by using the following bash code.
+The first crucial step for the genome assembly process is trimming adaptors from both 5' and 3' ends of your sequences. Also, getting rid of low-quality reads improves the standard of your analyzes. We used ``trimmomatic``  by using the following bash code.
 
 .. code-block:: bash
    :linenos:
@@ -37,9 +37,9 @@ Trimming
    LEADING:<quality> TRAILING:<quality> SLIDINGWINDOW:<windowSize>:<requiredQuality> MINLEN:<length>
 
 
-• As you can see from the above code, ``trimmomatic`` is a java based application. In the first line, we used ``java -jar trimmomatic-0.36.jar`` command to run the tool. ``PE`` parameter refers to paired-end data as an input. ``-phred33`` parameter is the quality type of your sequences, it can be changed for different quality types such as ``-phred64``. 
+As you can see from the above code, ``trimmomatic`` is a java based application. In the first line, we used ``java -jar trimmomatic-0.36.jar`` command to run the tool. The ``PE`` parameter indicates that input is paired-end data. The ``-phred33`` parameter indicates the quality encoding of your sequences. There are different quality encodings, such as ``-phred64``. 
 
-As a read input, we used our raw fastq files. In the second line, you can specify the output names. In the following line, ``ILLUMINACLIP`` parameter takes four input. With ``<fastaWithAdaptersEtc>``, you can choose a fasta file containing all adaptors and PCR sequences, etc. We used ``TruSeq3-PE.fa`` file for this option. ``<seed mismatches>`` option, allows us to choose the maximum mismatch count which will still allow a full match to be performed. We used ``2`` for this option. ``<palindrome clip threshold>`` specifies how accurate the match between the two 'adapter ligated' reads. We used ``30`` for this option. With ``<simple clip threshold>``, you can specify how accurate the match between any adapter etc. We used ``10`` for this option. In the last line, ``LEADING`` parameter allow us to specify the minimum quality required to keep a base. We used ``3`` for this option. ``TRAILING`` parameter acts as same with the previous one. We used ``3`` for this option. ``SLIDINGWINDOW`` parameter takes two inputs. With ``<windowSize>`` option, you can specify the number of bases to average across. With ``<requiredQuality>`` option, you can specify the average quality required. We used ``4 and 15`` for this option. ``MINLEN`` parameter allows us to specify the minimum length of reads to be kept. We used ``36`` for this option.
+As a read input, we used our raw fastq files. In the second line, you can specify the output names. In the following line, ``ILLUMINACLIP`` parameter takes four inputs. With ``<fastaWithAdaptersEtc>``, you indicate a fasta file containing all adaptors and PCR sequences, etc. We used ``TruSeq3-PE.fa`` file for this option. The ``<seed mismatches>`` option, allows us to choose the maximum mismatch count which will still allow a full match to be performed. We used ``2`` for this option. The ``<palindrome clip threshold>`` specifies how accurate the match between the two 'adapter ligated' reads. We used ``30`` for this option. With ``<simple clip threshold>``, you can specify how accurate the match between any adapter etc. We used ``10`` for this option. In the last line, the ``LEADING`` parameter allow us to specify the minimum quality required to keep a base. We used ``3`` for this option. The ``TRAILING`` parameter acts as the previous one. We also used ``3`` for this option. The ``SLIDINGWINDOW`` parameter takes two inputs. With ``<windowSize>`` option, you can specify the number of bases to average across. With ``<requiredQuality>`` option, you can specify the average quality required. We used ``4 and 15`` for this option. The ``MINLEN`` parameter allows us to specify the minimum length of reads to be kept. We used ``36`` for this option.
 
 Trimmomatic produces four fastq files: two for paired forward and reverse reads, and two for unpaired forward and reverse reads.
 
@@ -47,7 +47,7 @@ Trimmomatic produces four fastq files: two for paired forward and reverse reads,
 Quality Control
 ---------------
 
-After the trimming process, we want to compare the files we get with our raw data. We used ``FastQC`` quality control tool for this purpose. This program can be run in two ways. Either as a graphical user program that you can dynamically upload your files with ``Fastq`` format and you can see the results easily. Or, you can use command-line as a non-graphical program. Both ways, ``FastQC`` produces ``HTML`` files as an output that contains basic statistics, per base and sequence quality, per base and sequence GC content, sequence length distribution, sequence duplication levels, over-represented sequences, K-mer content et cetera.
+After the trimming process, we want to compare the files we get with our raw data. We used ``FastQC`` quality control tool for this purpose. This program can be run in two ways. Either as a graphical user program that you can dynamically upload your files with ``Fastq`` format and you can see the results easily. Or, you can use command-line as a non-graphical program. In both ways, ``FastQC`` produces ``HTML`` files as an output that contains basic statistics, per base and sequence quality, per base and sequence GC content, sequence length distribution, sequence duplication levels, over-represented sequences, K-mer content, *et cetera*.
 
 We used ``FastQC`` as a graphical user program on windows operating system. You can run ``FastQC`` with the following steps, easily.
 
@@ -65,9 +65,11 @@ The following step in our protocol is to map or align the reads into reference p
 Bwa-mem
 ^^^^^^^
 
-• The following *bash* code gives us the result of the alignment which contains only the references if the mapped reads more than 1000 .
+The following *bash* code gives us the result of the alignment, which contains only the reference plasmids having more than 1000 mapped reads.
 
-In the first line, the aligner creates an index for the alignment. ``-p`` parameter provides to entitle of output database. In the second line, bwa carry out the alignment process with ``mem`` algorithm and creates an output in **Sequence Alignment Map** (a.k.a *SAM*) format. ``-o`` parameter indicates the output file. In the third line, samtools sort the sam file and convert it to a bam file. ``-O`` parameter indicates the type of the output file. In the following line, samtools indexing the bam file. In the last line, idxstats gives us statistics about the results. It is a *TAB-delimited* file and each line consisting of *reference sequence name*, *sequence length*, *mapped reads number*, *unmapped reads number*. Therefore, we use awk command to select the third column which means *mapped reads number* and we filtered with a given threshold. After that, we sorted the output with sort command where ``N`` in ``-kN`` is the number of the key, and ``n`` means sort numeric. 
+In the first line, the program creates an index for the alignment. The ``-p`` parameter provides to title of output database. In the second line, *bwa* carries out the alignment process using the ``mem`` algorithm and creates an output in **Sequence Alignment Map** format (a.k.a *SAM*). The ``-o`` parameter indicates the output file.
+
+In the third line, *samtools* sorts the *sam* file and converts it to a *bam* file. The ``-O`` parameter indicates the type of the output file. In the following line, *samtools* indexes the *bam* file. In the last line, *idxstats* gives us statistics about the results. It is a *TAB-delimited* file and each line consists of *reference sequence name*, *sequence length*, *mapped reads number*, *unmapped reads number*. Therefore, we use the *awk* command to select the third column, which represents *mapped reads number*, and we filtered with a given threshold. After that, we sorted the output with the *sort* command where ``N`` in ``-kN`` is the number of the key, and ``n`` means numeric sort. 
 
 .. code-block:: bash
    :linenos:
@@ -82,7 +84,7 @@ In the first line, the aligner creates an index for the alignment. ``-p`` parame
 Bwa-aln
 ^^^^^^^
 
-• Using ``bwa-aln`` more or less is the same with ``bwa-mem`` except minor differences. As is seen in the previous explanation, the differences occur in the second, third, fourth and fifth lines. In the second line of code, we took up the database and we carried out the alignment process with our reads. The output is a ``sai`` file which is produced by ``bwa-aln``. In the third line, we follow the same idea for reverse reads. In the following line, ``sampe`` sub-command allow us to create a sam file with combining forward reads and reverse reads alignment. In the fifth line, we used ``samtools`` with ``view`` sub-command, ``-bS`` parameter allows us to create bam file from the sam file where ``-b`` parameter for the type of output file and ``-S`` parameter for ignoring compatibility for previous versions of ``samtools``.
+Using ``bwa-aln`` is more or less the same as ``bwa-mem``, except minor differences. As it is seen in the previous explanation, the differences occur in the second, third, fourth and fifth lines. In the second line of code, we took up the database and we carried out the alignment process with our reads. The output is a ``sai`` file which is produced by ``bwa-aln``. In the third line, we follow the same idea for reverse reads. In the following line, ``sampe`` sub-command allow us to create a sam file with combining forward reads and reverse reads alignment. In the fifth line, we used ``samtools`` with ``view`` sub-command, ``-bS`` parameter allows us to create bam file from the *sam* file where ``-b`` parameter for the type of output file and the ``-S`` parameter for ignoring compatibility for previous versions of ``samtools``.
 
 .. code-block:: bash
    :linenos:
@@ -100,19 +102,21 @@ Bwa-aln
 Finding Breadth of Coverage
 ---------------------------
 
-• In order to determine the most appropriate references, we should know the breadth of coverage of each reference. For this purpose, we used ``bedtools`` with ``genomeCoverageBed`` sub-command. ``genomeCoverageBed`` computes a histogram of coverage with a given genome. In the first line of code, we took the ``samtools idxstats`` output and select the column one and two. As we mentioned previously, ``idxstats`` output contains *reference sequence name*, *sequence length*, *mapped reads number*, *unmapped reads number*, respectively. We need only first and second column for the make ``genomeCoverageBed`` work. In the second line, ``-ibam`` parameter allows us to use bam file as an input. With ``-g`` parameter, the tool will report the depth of coverage at each base on each reference in the genome file. If we look at the output file, we can see that each line consisting of *reference sequence name*, *depth of coverage*, *number of bases with given depth*, *length of the reference* and *fraction of bases on reference with given depth*, respectively. In the third line, thanks to the ``awk`` command, we can calculate the breadth of coverage, easily.
+To determine the most appropriate reference plasmid, we should know the breadth of coverage of each reference plasmid. For this purpose, we used ``bedtools`` with the ``genomeCoverageBed`` sub-command. The ``genomeCoverageBed`` computes a histogram of coverage within a given genome. In the first line of code, we took the ``samtools idxstats`` output and we select columns one and two. As we mentioned previously, ``idxstats`` output contains *reference sequence name*, *sequence length*, *mapped reads number*, *unmapped reads number*, respectively. We need only first and second column for the make ``genomeCoverageBed`` work.
+
+In the second line, the ``-ibam`` parameter allows us to use the *bam* file as input. With the ``-g`` parameter, the tool will report the depth of coverage at each base on each reference in the genome file. If we look at the output file, we can see that each line consists of *reference sequence name*, *depth of coverage*, *number of bases with given depth*, *length of the reference*, and *fraction of bases on reference with given depth*, respectively. In the third line, thanks to the ``awk`` command, we can calculate the breadth of coverage, easily.
 
 .. warning::
 
-   • **0** depth means unmapped regions occur in reference. We must pay attention, if we want the calculate the breadth of coverage, properly.
+   A **0** depth means that there are unmapped regions in the reference. We must pay attention, if we want the calculate the breadth of coverage, properly.
 
-• We can say that the breadth of coverage can be calculated with ``1-$5`` if the second column equals *0* which means that summary of fraction of all depth, but 0.
+The breadth of coverage can be calculated with ``1-$5`` in the rows where the second column equals *0*, that it, the fraction of the reference with any depths, except 0.
 
 .. note::
 
-   • ``0.2>$5`` this condition allow us to choose references with higher coverage.
+   The condition ``0.2>$5`` allow us to choose references with higher coverage.
 
-• In the following lines, we combine the results in one file with ``cat`` command and we sort the file numerically.  
+In the following lines, we combine the results in one file with the ``cat`` command and we sort the file numerically.
    
 .. code-block:: bash
    :linenos:
@@ -127,18 +131,18 @@ Finding Breadth of Coverage
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Aligning Reads with Best Candidates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-• We determine the two most likely references. We choose one of them according to the breadth of coverage results. The other one is suggested to us from the owner of the reads. You can access the references with accession number `NC_025175.1`_ and `NC_025138.1`_, respectively.
+We determine the two most likely references. We choose one of them according to the breadth of coverage results. The other one was suggested to us by the author of the reads, Dr. Terje Steinum. You can access the references with accession number `NC_025175.1`_ and `NC_025138.1`_, respectively.
 
 .. _NC_025175.1: https://www.ncbi.nlm.nih.gov/nuccore/NC_025175.1
 .. _NC_025138.1: https://www.ncbi.nlm.nih.gov/nuccore/NC_025138.1
 
--------------------------
-Libraries-Best candidates
--------------------------
+----------------------------------------------
+Libraries - Choosing which reads to assesemble
+----------------------------------------------
 
-• After choosing the reference plasmids, we want to see which reads mapped to them. This will allow us to filter the reads, and keep only the ones that will have a better chance to be assembled properly. The idea is to filter out the reads that may be part of the host DNA.
+After choosing the reference plasmids to be used in the rest of this study, we want to see which reads mapped to them. This will allow us to filter the reads, and keep only the ones that will have a better chance to be assembled properly. The idea is to filter out the reads that may be part of the host DNA.
 
-In the first line, ``bwa`` creates an index for the reference file. In the second line, the alignment process occurs and ``-R`` parameter allows us to configure the header line of the output ``sam`` file. In the following line, ``fixmate`` sub-command provides to fill in mate coordinates from a name sorted alignment. In the last line, ``fixmate`` output sorted with ``sort`` sub-command.  
+In the first line, ``bwa`` creates an index for the reference file. In the second line, the alignment occurs. The ``-R`` parameter allows us to configure the header line of the output ``sam`` file. In the following line, the ``fixmate`` sub-command allows us to fill in the mate coordinates from a name sorted alignment. In the last line, ``fixmate`` output sorted with ``sort`` sub-command.
 
 .. code-block:: bash
    :linenos:
@@ -152,7 +156,7 @@ In the first line, ``bwa`` creates an index for the reference file. In the secon
 Filtering Reads
 ---------------
 
-Filtering reads is an important process if you want to assemble your reads successfully. Firstly, we merge 3 different ``fixmatesorted.bam`` files that we got alignment process with using ``samtools merge`` command. You can see the code in the below.
+Filtering reads is an important process if you want to assemble your reads successfully. Firstly, we merge the three ``fixmatesorted.bam`` files that we got from the alignment process, using the ``samtools merge`` command. You can see the code below.
 
 ..  code-block:: bash
     :linenos:
@@ -161,19 +165,19 @@ Filtering reads is an important process if you want to assemble your reads succe
 
 ..  warning::
     
-    You should indicate output file as first. Otherwise, you will get an error.
+    You should indicate the output file in the first place. Otherwise, you will get an error.
 
 ..  note::
 
-    We used 3 different bam files. Because ``trimmomatic`` produced 4 different outputs and in the ``Mapping`` process two of them are combined as a paired file. Hence, we got 3 bam files like ``pairedfixmatesorted``, ``forward-unpairedfixmatesorted``, ``reverse-unpairedfixmatesorted``.
+    We can use up to three different bam files. But ``trimmomatic`` produced four different outputs. In the ``Mapping`` process, two of them are combined as a paired file. Hence, we got 3 bam files named ``pairedfixmatesorted``, ``forward-unpairedfixmatesorted``, ``reverse-unpairedfixmatesorted``.
 
 
 ..  note::
 
-    We merged ``BAM`` files in order to keep in mind all reads.
+    We merged ``BAM`` files in order to keep all reads.
 
 
-After merging ``BAM`` files. We want to see depth results for each position in the plasmid genome. ``samtools mpileup`` gives detail output for this. You can look at ``mpileup`` output from the given list below. Each line consists of 5 ``tab-separated`` columns. Column 6 is optional.
+After merging the ``BAM`` files, we want to see the depth of coverage for each position in the plasmid genome. ``samtools mpileup`` gives detailed output for this. You can look at the ``mpileup`` output in the list given below. Each line consists of 5 *tab-separated* columns. Column 6 is optional.
 
 1. Sequence name
 2. Position (starting from 1)
@@ -182,7 +186,7 @@ After merging ``BAM`` files. We want to see depth results for each position in t
 5. Bases at that position from aligned reads
 6. Phred Quality of those bases (OPTIONAL).
 
-We need only column ``1,2,4``. These columns are sequence name, position and depth of coverage, respectively. We combine ``samtools mpileup`` with ``awk`` command to carry out this purpose. 
+We need only columns ``1,2,4``. These columns contain sequence name, position and depth of coverage, respectively. We combine ``samtools mpileup`` with ``awk`` command to carry out this purpose. 
 
 
 .. code-block:: bash
@@ -191,7 +195,7 @@ We need only column ``1,2,4``. These columns are sequence name, position and dep
    samtools mpileup [merged].bam | awk '{print $1"\t"$2"\t"$4}' > [depth].txt
 
 
-``[depth].txt`` file allows us to filter low and high coverage regions on the plasmid genome. We parsed the file using following python script and we create a new filtered fastq file.
+The ``[depth].txt`` file allows us to filter high coverage regions on the plasmid genome. We parsed the file using following python script and we create a new filtered fastq file.
 
 
 .. code-block:: python
@@ -276,12 +280,12 @@ Phrap Assembly
 Assembly Preparation
 ^^^^^^^^^^^^^^^^^^^^
 
-Phrap assembly tool takes fasta file and quality file as an input. So, we need to create these file from fastq file which we filtered in the previous step. The following bash code carry out this process. ``Fastq`` files consists of 4 lines per sequence.
+Phrap assembly tool takes a fasta file and a quality file as input. So, we need to create these files from the fastq file which we filtered in the previous step. The following bash code carries out this process. The ``Fastq`` files consist of 4 lines per sequence.
 
-1. First line starts with ``@`` character and this is followed by sequence identifier.
-2. Second line contains the sequences that is belong to the read.
-3. Third line mostly contains only ``+`` sign to separate raw sequences and quality scores of each read.
-4. Fourth line consists of quality scores of reads correspond to the sequences in second line.
+1. First line starts with a ``@`` character and this is followed by sequence identifier.
+2. Second line contains the sequence of the read.
+3. Third line contains only a ``+`` sign to separate raw sequences and quality scores of each read.
+4. Fourth line consists of quality scores of reads corresponding to the sequences in the second line.
 
 In the first line of code, we select first and second column to create a ``fasta`` file. Also, we replaced ``@`` symbol with ``>``. In the following line, we select only first and fourth column to create a ``quality file``.
 
@@ -295,7 +299,7 @@ In the first line of code, we select first and second column to create a ``fasta
 Assembly Process
 ^^^^^^^^^^^^^^^^
 
-To start the assembly with using ``Phrap``, we need to run the code in the below. With the ``-ace`` parameter, we will get ``ace`` files for the output.
+To start the assembly with  ``Phrap``, we need to run the following code. With the ``-ace`` parameter, we will get ``ace`` files for the output.
 
 .. code:: bash
    :linenos:
@@ -355,6 +359,3 @@ Assembly Statistics
 ^^^^^^^^^^^^^^^^^^^
 
 We used ``Quast`` again for the statistics about assembly. See :ref:`Quast`.
-
-
-
