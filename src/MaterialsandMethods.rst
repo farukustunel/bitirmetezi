@@ -195,7 +195,7 @@ We need only columns ``1,2,4``. These columns contain sequence name, position an
    samtools mpileup [merged].bam | awk '{print $1"\t"$2"\t"$4}' > [depth].txt
 
 
-The ``[depth].txt`` file allows us to filter high coverage regions on the plasmid genome. We parsed the file using following python script and we create a new filtered fastq file.
+The ``[depth].txt`` file allows us to filter high coverage regions on the plasmid genome. We parsed the file using following python script and we create a new file that contains reads to assemble.
 
 
 .. code-block:: python
@@ -260,9 +260,12 @@ The ``[depth].txt`` file allows us to filter high coverage regions on the plasmi
                if loc is None:
                    print(read_name, file=outfile)
 
+With the filtered reads, we create new fastq file by using the code below.
 
 .. code-block:: python
    :linenos:
+   :caption: sam2fastq.py
+   :name: sam2fastq.py
 
    input_file = sys.stdin
    id_file = sys.argv[1]
@@ -343,7 +346,10 @@ After the first assembly with ``Phrap``, we want to extend our contigs with the 
 .. code:: bash
    :linenos:
 
-   samtools view -f 4 [Reference Alignment fixmatesorted].bam
+   samtools view -f 4 [Reference fixmatesorted].bam | cut -f 1 > [no align read id's].txt
+   zcat [trimmed fastq].fq.gz | python3 sam2fastq.py [no align read id's].txt | gzip -c > [ready2assemble].fastq.gz
+
+See :ref:`sam2fastq.py`.
 
 
 ^^^^^^^^^^^^^^^^
@@ -355,7 +361,7 @@ We used ``SPAdes`` as a second assembler. With the ``--trusted-contig`` paramete
 .. code:: bash
    :linenos:
 
-   spades.py -o [Output folder] --only-assembler -1 [Forward fastq file] -2 [Reverse fastq file] --s1 [Singles 1] --s2 [Singles 2] --trusted-contigs [contigs].fasta
+   spades.py -o [Output folder] --only-assembler -1 [Forward ready2assemble fastq file] -2 [Reverse ready2assemble fastq file] --s1 [Singles ready2assemble 1] --s2 [Singles ready2assemble 2] --trusted-contigs [contigs].fasta
 
 
 ^^^^^^^^^^^^^^^^^^^
@@ -363,3 +369,16 @@ Assembly Statistics
 ^^^^^^^^^^^^^^^^^^^
 
 We used ``Quast`` again for the statistics about assembly. See :ref:`Quast`.
+
+
+------
+Blastn
+------
+
+For scaffolding contigs that we get, we need to see *nucleotide blast* or *blastn* results. For this, we use following code in below. If we look at the parameters, we can see that ``query`` parameter for our contigs. The ``subject`` parameter for the reference plasmid. The ``outfmt`` parameter for the alignment view option and we used *6* for this which is *tabular*.
+ The ``out`` parameter for the output file and the ``evalue`` parameter for the expectation value (E) threshold for saving hits.
+
+.. code-block:: bash
+   :linenos:
+
+   blastn -query [spades].contigs -subject [Reference].fasta -outfmt 6 -out [assembly-reference.blastn].txt -evalue 1e-15
