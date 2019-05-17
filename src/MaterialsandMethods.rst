@@ -346,8 +346,8 @@ After the first assembly with ``Phrap``, we want to extend our contigs with the 
 .. code:: bash
    :linenos:
 
-   samtools view -f 4 [Reference fixmatesorted].bam | cut -f 1 > [no align read id's].txt
-   zcat [trimmed fastq].fq.gz | python3 sam2fastq.py [no align read id's].txt | gzip -c > [ready2assemble].fastq.gz
+   samtools view -f 4 [Reference fixmatesorted].bam | cut -f 1 > [no align read ids].txt
+   zcat [trimmed fastq].fq.gz | python3 sam2fastq.py [no align read ids].txt | gzip -c > [ready2assemble].fastq.gz
 
 See :ref:`sam2fastq.py`.
 
@@ -375,8 +375,7 @@ We used ``Quast`` again for the statistics about assembly. See :ref:`Quast`.
 Blastn
 ------
 
-For scaffolding contigs that we get, we need to see *nucleotide blast* or *blastn* results. For this, we use following code in below. If we look at the parameters, we can see that ``query`` parameter for our contigs. The ``subject`` parameter for the reference plasmid. The ``outfmt`` parameter for the alignment view option and we used *6* for this which is *tabular*.
- The ``out`` parameter for the output file and the ``evalue`` parameter for the expectation value (E) threshold for saving hits.
+For scaffolding contigs that we get, we need to see *nucleotide blast* or *blastn* results. For this, we use following code in below. If we look at the parameters, we can see that ``query`` parameter for our contigs. The ``subject`` parameter for the reference plasmid. The ``outfmt`` parameter for the alignment view option and we used *6* for this which is *tabular*. The ``out`` parameter for the output file and the ``evalue`` parameter for the expectation value (E) threshold for saving hits.
 
 .. code-block:: bash
    :linenos:
