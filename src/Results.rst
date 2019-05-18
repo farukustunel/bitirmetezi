@@ -299,113 +299,92 @@ In the below table, we introduced the exact positions that are not covered from 
 Also, some genes that are not covered from our reads. In the following table, you can see which genes that are not covered from our reads.
 
 
-.. list-table:: Genes That Are Not Covered From Our Reads
-   :widths: 30 25 12 25 40
+.. list-table:: Genes That Are Not Covered From Our Reads 
+   :widths: 30 12 25 40
    :header-rows: 1
    :align: left
 
    * - Library
-     - Accession
      - Strand
      - Locus Tag
      - Product
-   * - Both
-     - NC_025175.1  
+   * - Both  
      - (-)
      - D616_p149014
      - hypothetical protein
-   * - Both
-     - NC_025175.1 
+   * - Both 
      - (+)
      - D616_p149136
      - IS629 transposase
-   * - Both
-     - NC_025175.1  
+   * - Both  
      - (+)
      - D616_p149137
      - Mobile element protein
-   * - Both
-     - NC_025175.1 
+   * - Both 
      - (+)
      - D616_p149138
      - hypothetical protein
-   * - Both
-     - NC_025175.1 
+   * - Both 
      - (+)
      - D616_p149139
      - Retron-type RNA-directed DNA polymerase
    * - Both
-     - NC_025175.1
      - (-)
      - D616_p149173
      - AroG 
    * - Both
-     - NC_025175.1
      - (-)
      - D616_p149174
      - hypothetical protein 
    * - Both
-     - NC_025175.1
      - (-)
      - D616_p149207
      - hypothetical protein
    * - *Citrobacter freundii* (F20)
-     - NC_025175.1
      - (-)
      - D616_p149217
      - Relaxase /helicase
    * - *Citrobacter freundii* (F20)
-     - NC_025175.1
      - (+)
      - D616_p149224
      - Mercuric resistance operon coregulator, MerD
    * - Both
-     - NC_025175.1
      - (+)
      - D616_p149228
      - TniB NTP-binding protein 
    * - Both
-     - NC_025175.1
      - (+)
      - D616_p149229
      - hypothetical protein 
    * - Both
-     - NC_025175.1
      - (-)
      - D616_p149230
      - macrolide 2-phosphotransferase, mph(B) 
    * - Both
-     - NC_025175.1
      - (-)
      - D616_p149231
      - hydrolase, alpha/beta fold family 
    * - Both
-     - NC_025175.1
      - (-)
      - D616_p149232
      - Transcriptional regulator, TetR family 
    * - Both
-     - NC_025175.1
      - (-)
      - D616_p149233
      - hypothetical protein 
    * - Both
-     - NC_025175.1
      - (-)
      - D616_p149234
      - Beta-lactamase 
    * - Both
-     - NC_025175.1
      - (+)
      - D616_p149235
      - hypothetical protein 
    * - Both
-     - NC_025175.1
      - (-)
      - D616_p149236
      - GGDEF family protein 
    * - Both
-     - NC_025175.1
      - (+)
      - D616_p149237
      - TniB NTP-binding protein
@@ -423,3 +402,40 @@ Also, some genes that are not covered from our reads. In the following table, yo
     :figclass: align-center
 
     Visualization of Reverse Complement Contigs Assembled with SPAdes
+
+
+.. list-table:: Contigs Statistics for NC_025175.1
+   :widths: 30 25 12 12 12 12
+   :header-rows: 1
+   :align: left
+
+   * - Library
+     - Assembly Tool
+     - Number Of Contigs
+     - N50
+     - Number of Highly Similar Contigs
+     - N50
+   * - *Escherichia coli* (F5)  
+     - Phrap
+     - 545
+     - 2318
+   * - 520 
+     - 2318
+   * - *Citrobacter freundii* (F20)  
+     - Phrap
+     - 590
+     - 2071
+     - 538
+     - 2071
+   * - *Escherichia coli* (F5) 
+     - SPAdes
+     - 3815
+     - 1028
+     - 13
+     - 86647
+   * - *Citrobacter freundii* (F20)   
+     - SPAdes
+     - 3704
+     - 1040
+     - 25
+     - 15692
