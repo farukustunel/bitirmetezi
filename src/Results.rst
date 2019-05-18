@@ -405,7 +405,6 @@ Also, some genes that are not covered from our reads. In the following table, yo
 
 
 .. list-table:: Contigs Statistics for NC_025175.1
-   :widths: 30 25 12 12 12 12
    :header-rows: 1
    :align: left
 
