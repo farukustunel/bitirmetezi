@@ -446,3 +446,19 @@ We did the first assembly with *Phrap* and we used the only mapped reads with re
      - 1040
      - 25
      - 15692
+
+
+After scaffolding contigs, we visualize the both libraries plasmid genome in *Artemis Comparasion Tool*.
+
+.. figure:: ../_static/Escherichia_coli_F5.svg
+   :align: center
+   :figclass: align-center 
+
+   *Escherichia coli* (F5) Plasmid Genome
+
+
+.. figure:: ../_static/Citrobacter_freundii_F20.svg
+   :align: center
+   :figclass: align-center 
+
+   *Citrobacter freundii* (F20) Plasmid Genome
