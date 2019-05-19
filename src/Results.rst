@@ -296,7 +296,7 @@ In the below table, we introduced the exact positions that are not covered from 
      - 6774
 
 
-Also, some genes that are not covered from our reads. In the following table, you can see which genes that are not covered from our reads.
+Also, some genes that are not covered by our reads. In the following table, you can see which genes that are not covered by our reads. The most significant genes are *Beta-lactamase* for both libraries. Because of this gene, bacterial organisms have shown resistance to the antibiotics. For library *Citrobacter freundii* (F20), *Mercuric resistance operon coregulator, MerD* gene is the most important one. This gene has shown resistance to the *Mercury* element (Hg). It can be useful for the bioremediation of contaminated environments.
 
 
 .. list-table:: Genes That Are Not Covered From Our Reads 
@@ -390,18 +390,25 @@ Also, some genes that are not covered from our reads. In the following table, yo
      - TniB NTP-binding protein
     
 
-.. figure:: ../_static/Contigs.png
+This figure contains the biggest contigs for *Escherichia coli* (F5) library that we get after the assembly process with SPAdes. The important deduction we make is that *Contig2* has insertion.
+
+.. figure:: ../_static/F5-ACT.png
     :align: center
     :figclass: align-center
 
-    Visualization of Contigs Assembled with SPAdes
+    Visualization of Contigs For Library F5
 
 
-.. figure:: ../_static/Contigsrevcomp.png
+The figure below belongs to *Citrobacter freundii* (F20) library. The *Contig2, Contig3 and, Contig5* have the deletion.
+
+.. figure:: ../_static/F20-ACT.png
     :align: center
     :figclass: align-center
 
-    Visualization of Reverse Complement Contigs Assembled with SPAdes
+    Visualization of Contigs For Library F20
+
+
+We did the first assembly with *Phrap* and we used the only mapped reads with reference plasmid. After the assembly process, we get *545 contigs* for library *Escherichia coli* (F5) and *590 contigs* for library *Citrobacter freundii* (F20). After that, we decide to extend our contigs using the unmapped reads with reference plasmid. As a result, we get fewer contigs.
 
 
 .. list-table:: Contigs Statistics for NC_025175.1
