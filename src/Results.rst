@@ -77,7 +77,7 @@ For *Escherichia coli* library, ``trimmomatic`` drops **443** reads for forward 
 
 Also, you can see the comparasion of the raw reads and the trimmed reads in the histogram below.
 
-.. figure:: ../_static/numberofreads.png
+.. figure:: ../_static/numberofreads.svg
    :align: center
    :figclass: align-center
    
@@ -86,7 +86,7 @@ Also, you can see the comparasion of the raw reads and the trimmed reads in the 
 
 In the figure below, you can see the read lengths before and after trimming in both libraries. Mostly, the reads are conserved with the length of 250.
 
-.. figure:: ../_static/Read_length_hist.png
+.. figure:: ../_static/Read_length_hist.svg
    :align: center
    :figclass: align-center
 
@@ -217,7 +217,7 @@ We find the number of mapping reads using ``samtools view -F 4`` command. As you
 
 After choosing the best candidate, we want see the depth of coverage for each position.
 
-.. figure:: ../_static/depth.png
+.. figure:: ../_static/depth.svg
     :align: center
     :figclass: align-center
 

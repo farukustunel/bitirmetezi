@@ -16,7 +16,7 @@ Protocols
 
 The workflow for bacterial genome assembly used in this study is shown in the figure below.
 
-.. figure:: ../_static/protocol.png
+.. figure:: ../_static/protocol.svg
    :width: 300px
    :align: center
    :height: 800px
