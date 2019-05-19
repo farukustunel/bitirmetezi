@@ -381,3 +381,21 @@ For scaffolding contigs that we get, we need to see *nucleotide blast* or *blast
    :linenos:
 
    blastn -query [spades].contigs -subject [Reference].fasta -outfmt 6 -out [assembly-reference.blastn].txt -evalue 1e-15
+
+
+Also, you can get the mapped contigs with reference using the following bash code.
+
+.. code-block:: bash
+   :linenos:
+
+   cut -f 1 [assembly-reference.blastn].txt |uniq > [contigsid].txt
+
+   awk 'BEGIN{while((getline<"contigsid.txt")>0)l[">"$1]=1}/^>/{f=l[$1]}f' contigs.fasta > [mapped contigs].fasta
+
+
+The following code gives us the order of contigs by positions, ascendingly.
+
+.. code-block:: bash
+   :linenos: 
+
+   awk 'BEGIN {OFS="\t"} $9>$10 {x=$9; $9=$10; $10=x; print $0,"-"; next} {print $0,"+"}' [assembly-reference.blastn].txt |sort -k 9n |less -S > [Ordered Contigs].txt
