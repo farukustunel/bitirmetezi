@@ -22,6 +22,8 @@ The workflow for bacterial genome assembly used in this study is shown in the fi
    :height: 800px
    :figclass: align-center 
 
+   Workflow
+
 --------
 Trimming
 --------
