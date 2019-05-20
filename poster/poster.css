@@ -1,0 +1,230 @@
+html {
+	font-family: sans-serif;
+	font-size: xx-large;
+}
+
+body {
+	/* border: black; */
+	/* border-style: dashed; */
+	/* border-width: thin; */
+	width: 70cm;
+	height: 98cm;
+	background: antiquewhite;
+	counter-reset: fig;
+}
+
+#header {
+	/* border: black; */
+	/* border-style: dashed; */
+	/* border-width: thin; */
+	margin: 1cm;
+}
+
+#authors {
+	counter-reset: auth;
+	display: flex;
+	justify-content: center;	
+}
+
+#affiliations {
+	counter-reset: auth;
+}
+
+h1 {
+	/* border: black; */
+	/* border-style: solid; */
+	/* border-width: thin; */
+	margin: initial;
+}
+
+h2 {
+	/* border: black; */
+	/* border-style: dashed; */
+	/* border-width: thin; */
+	margin: initial;
+}
+
+h3 {
+	font-style: italic;
+}
+
+h3, h4 {
+	margin-bottom: initial;
+	margin-top: initial;
+}
+
+.level3 {
+	margin-top: 5mm;
+}
+
+h2 + .level3 {
+	margin-top: initial;
+}
+h1.title {
+	/* border: black; */
+	/* border-style: solid; */
+	/* border-width: thin; */
+	text-align: center;
+	margin: initial;
+	color: red;
+}
+
+h2.author {
+	/* border: black; */
+	/* border-style: dashed; */
+	/* border-width: thin; */
+	text-align: center;
+	padding: 0mm 12mm;
+}
+
+h2.author:after {
+    position: absolute;
+    width: 2em;
+    height: 1.1em;
+    text-align: center;
+    /* background: lime; */
+    color: black;
+    line-height: 1.1em;
+    font-size: .7em;
+    /* border-radius: 50%; */
+    /* right: 0; */
+    font-weight: normal;
+    counter-increment: auth;
+    content: "["counter(auth)"]";
+}
+
+h2.affiliation {
+	/* border: black; */
+	/* border-style: dashed; */
+	/* border-width: thin; */
+	font-weight: normal;
+	text-align: center;
+}
+
+h2.affiliation:before {
+    /* position: absolute; */
+    /* width: 1.1em; */
+    /* height: 1.1em; */
+    /* text-align: center; */
+    /* background: lime; */
+    /* color: black; */
+    /* line-height: 1.1em; */
+    font-size: .7em;
+    /* border-radius: 50%; */
+    /* right: 0; */
+    font-weight: normal;
+    counter-increment: auth;
+    content: "["counter(auth)"] ";
+}
+
+h3.date {
+	/* border: black; */
+	/* border-style: dashed; */
+	/* border-width: thin; */
+	margin: initial;
+	text-align: center;
+}
+
+.section.level1 {
+	border: black;
+	border-style: solid;
+	border-width: thin;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	height: 87cm;
+	padding: 3mm;
+	align-content: stretch;
+	/* margin-top: 2cm; */
+}
+
+.section.level2 {
+	border: black;
+	border-style: solid;
+	border-width: thick;
+	padding: 5mm;
+/*	border-radius: 12mm; */
+	background: white;
+	width: 212mm;
+	margin-top: 5mm;
+	flex-basis: auto;
+	/* margin-left: 2mm; */
+	/* margin-right: 2mm; */
+}
+
+.level1 > h1 {
+	/* border: black; */
+	/* border-style: solid; */
+	/* border-width: thin; */
+	/* margin: initial; */
+	/* position: absolute; */
+	/* top: 48mm; */
+	/* width: 65cm; */
+}
+
+
+p.caption {
+	/* border: black; */
+	/* border-style: dashed; */
+	/* border-width: thin; */
+	font-style: italic;
+}
+
+p.caption:before {
+    /* position: absolute; */
+    /* width: 1.1em; */
+    /* height: 1.1em; */
+    /* text-align: center; */
+    /* background: lime; */
+    /* color: black; */
+    /* line-height: 1.1em; */
+    /* font-size: .7em; */
+    /* border-radius: 50%; */
+    /* right: 0; */
+    font-weight: bold;
+    counter-increment: fig;
+    content: "Figure "counter(fig)": ";
+}
+
+p {
+	text-align: justify;
+	/* border: black; */
+	/* border-style: dashed; */
+	/* border-width: thin; */
+	margin: initial;
+	margin-bottom: 5mm;
+}
+
+pre.r {
+	border: black;
+	border-style: solid;
+	border-width: thin;
+}
+
+pre {
+	border: black;
+	border-style: solid;
+	border-width: thin;
+}
+
+.figure {
+	border: black;
+	border-style: solid;
+	border-width: thin;
+	/* justify-content: space-between; */
+	padding: 5mm;
+	margin-bottom: 3mm;
+}
+
+img {
+	/* border: black; */
+	/* border-style: dashed; */
+	/* border-width: thin; */
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+blockquote {
+	font-style: italic;
+}

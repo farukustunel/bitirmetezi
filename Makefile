@@ -13,7 +13,15 @@ help:
 
 .PHONY: help Makefile
 
+poster/%.md: src/%.rst
+	pandoc $^ --atx --wrap=none -o $@
+	
+poster/poster.html: poster/poster.yaml poster/Introduction.md poster/Results.md
+	pandoc --section-divs -t html4 --template=poster-template.html --css poster-local.css $^ -o $@
+
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile
-	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+#%: Makefile
+#	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	
+	

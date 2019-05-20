@@ -1,0 +1,26 @@
+#header {
+	background-image: url("IU_Logo_128.png");
+	background-repeat: no-repeat;
+	background-size: 55mm;
+}
+
+h1.title {
+	margin-left:5cm;
+}
+
+.expand /*, .section.level2 */ {
+	flex-grow: 1;
+}
+
+.section.level2.wide {
+	width: 430mm;
+}
+
+.wide ~ .level2 {
+		width: 430mm;
+}
+
+.references p {
+	/* border:antiquewhite; */
+	font-size: x-large;
+}

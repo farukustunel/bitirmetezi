@@ -1,0 +1,613 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Faruk Üstünel" />
+  <meta name="author" content="Andrés Aravena" />
+  <meta name="date" content="2019-05-22" />
+  <title>Assembly of NGS reads to determine DNA sequence of Multidrug Resistant Plasmid isolated in Cow and Human E.coli and C.freundii</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="poster.css" type="text/css" />
+  <link rel="stylesheet" href="poster-local.css" type="text/css" />
+</head>
+<body>
+<div id="header">
+<h1 class="title">Assembly of NGS reads to determine DNA sequence of Multidrug Resistant Plasmid isolated in Cow and Human <em>E.coli</em> and <em>C.freundii</em></h1>
+<div id="authors">
+<h2 class="author">Faruk Üstünel</h2>
+<h2 class="author">Andrés Aravena</h2>
+</div>
+<div id="affiliations">
+<h2 class="affiliation">Molecular Biology and Genetics Department, Faculty of Sciences, Istanbul University, Turkey</h2>
+</div>
+<h3 class="date">22 May 2019</h3>
+</div>
+<div id="section" class="section level1">
+<h1></h1>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Multidrug resistant (MDR) bacteria are one of the most important current threats to public health(1). The source of this analysis rely on an article which is called "Horizontal Tranfer of a Multi-Drug Resistance Plasmid between Caliform Bacteria of Human and Bovine Origin in a Farm Environment". This study follows different steps. First, Multi-drug-resistant coliform bacteria were isolated from feces of cattle exposed to antimicrobial agents and humans associated with the animals. Seconds, ısolates from both cattle and humans harbored an R plasmid of 65 kb (pTMS1) that may have been transferred between them due to selective antibiotic pressure in the farm environment(2). At the end of the study, different strain and plasmid of <em>Coliform bacteria</em> in <em>different Humans</em> and <em>Cows</em> are obtained.</p>
+<p>In this project, we compared all plasmids with genomic DNA from <strong>refseq</strong> database against original plasmid which is isolated from farm environment.</p>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<p>We have <strong>343434</strong> reads in the sample taken from <em>Escherichia coli</em> and <em>251128</em> reads for <em>Citrobacter freundii</em>. If you compare each library in proportion to the total number of bases, you will see that <em>Escherichia coli</em> library has more nucleotides and more reads.</p>
+<table style="width:98%;">
+<colgroup>
+<col width="37%" />
+<col width="30%" />
+<col width="30%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">File Name</th>
+<th align="left">Number of Reads</th>
+<th align="left">Number of Bases</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1-F5-96_S1_L001_R1_001</td>
+<td align="left">171717</td>
+<td align="left">38124416</td>
+</tr>
+<tr class="even">
+<td align="left">1-F5-96_S1_L001_R2_001</td>
+<td align="left">171717</td>
+<td align="left">38253111</td>
+</tr>
+<tr class="odd">
+<td align="left">4-F20-96_S2_L001_R1_001</td>
+<td align="left">125564</td>
+<td align="left">27633180</td>
+</tr>
+<tr class="even">
+<td align="left">4-F20-96_S2_L001_R2_001</td>
+<td align="left">125564</td>
+<td align="left">27727284</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="raw-data-statistics" class="section level2">
+<h2>Raw Data Statistics</h2>
+<p>After trimming, we get 4 different outputs for each library. For each one of them, we have forward and reverse reads. For those reads, we have paired and unpaired reads.</p>
+<p>For <em>Escherichia coli</em> library, <code>trimmomatic</code> drops <strong>443</strong> reads for forward strand and drops <strong>8394</strong> reads for reverse strand. If we look at <em>Citrobacter freundii</em>, <strong>321</strong> reads are dropped by <code>trimmomatic</code> for forward strand and <strong>5926</strong> reads are dropped for reverse strand. You can see the detail numbers in the table below.</p>
+<table style="width:98%;">
+<colgroup>
+<col width="34%" />
+<col width="21%" />
+<col width="21%" />
+<col width="21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">File Name</th>
+<th align="left">F5 Reads</th>
+<th align="left">F20 Reads</th>
+<th align="left">F20/F5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">forward_paired</td>
+<td align="left">163188</td>
+<td align="left">119552</td>
+<td align="left">73.26%</td>
+</tr>
+<tr class="even">
+<td align="left">forward_unpaired</td>
+<td align="left">8086</td>
+<td align="left">5691</td>
+<td align="left">70.37%</td>
+</tr>
+<tr class="odd">
+<td align="left">forward dropped</td>
+<td align="left"><strong>443</strong></td>
+<td align="left"><strong>321</strong></td>
+<td align="left"><strong>72.26%</strong></td>
+</tr>
+<tr class="even">
+<td align="left">reverse_paired</td>
+<td align="left">163188</td>
+<td align="left">119552</td>
+<td align="left">73.26%</td>
+</tr>
+<tr class="odd">
+<td align="left">reverse_unpaired</td>
+<td align="left">135</td>
+<td align="left">86</td>
+<td align="left">63.31%</td>
+</tr>
+<tr class="even">
+<td align="left">reverse dropped</td>
+<td align="left"><strong>8394</strong></td>
+<td align="left"><strong>5926</strong></td>
+<td align="left"><strong>70.59%</strong></td>
+</tr>
+<tr class="odd">
+<td align="left">Total Reads After Trimming</td>
+<td align="left">334597</td>
+<td align="left">244881</td>
+<td align="left">73.19%</td>
+</tr>
+<tr class="even">
+<td align="left">Total Reads</td>
+<td align="left">343434</td>
+<td align="left">251128</td>
+<td align="left">73.12%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="number-of-ncbi-refseq-records" class="section level2">
+<h2>Number of NCBI RefSeq Records</h2>
+<p>The summary of the results is listed in the below table. We put a threshold for the mapping reads number which is <code>1000</code><span class="title-ref">. We use this number because we want to clear results. The threshold can be changed from the person who wants to follow this protocol. Also, we decided that at least half of the reference genome should be covered by our reads. Hence, the threshold for the breadth of coverage is</span><span class="title-ref">50%</span>`.</p>
+<table style="width:98%;">
+<colgroup>
+<col width="27%" />
+<col width="31%" />
+<col width="38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Library</th>
+<th align="left">Plasmids with &gt;1K Mapping Reads</th>
+<th align="left">Plasmids where Breadth of Coverage &gt;50%</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">173</td>
+<td align="left">45</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">135</td>
+<td align="left">36</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="coverage-statistics" class="section level2">
+<h2>Coverage Statistics</h2>
+<p>These results can be interpreted wrongly, because we do not know the answers to the following questions:</p>
+<ol style="list-style-type: decimal">
+<li>Are the mapped reads separated in the plasmid?</li>
+<li>Are the reads only mapped to particular regions of the reference plasmid?</li>
+</ol>
+<p>The breadth of coverage results give us the answers of questions listed above. The following table shows the plasmids in the database with higher breadth of coverage.</p>
+<table style="width:98%;">
+<colgroup>
+<col width="37%" />
+<col width="28%" />
+<col width="31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Library</th>
+<th align="left">Accession</th>
+<th align="left">Breadth of Coverage (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">NC_025175.1</td>
+<td align="left">90.2%</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">NC_024956.1</td>
+<td align="left">88.3%</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">NC_025139.1</td>
+<td align="left">79.7%</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">NC_019049.1</td>
+<td align="left">77.7%</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">NC_004998.1</td>
+<td align="left">60.2%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="top-5-best-candidates" class="section level2">
+<h2>Top 5 Best Candidates</h2>
+<p>We choose the plasmid with higher breadth of coverage (<code>NC_025175.1</code>) for further study. We also included in this study the plasmid <code>NC_025138.1</code>, that was suggested by one of the authors of the original paper, who also isolated the samples we study.</p>
+<p>We find the number of mapping reads using <code>samtools view -F 4</code> command. As you can see in the table below, more reads map to the plasmid <code>NC_025175.1</code> than to <code>NC_025138.1</code>, in both libraries. The difference between the number of mapping reads is <strong>243443</strong> for <em>Escherichia coli</em> (F5) and <strong>165817</strong> for <em>Citrobacter freundii</em> (F20).</p>
+<table style="width:98%;">
+<colgroup>
+<col width="23%" />
+<col width="13%" />
+<col width="20%" />
+<col width="40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Library</th>
+<th align="left">Accession</th>
+<th align="left">Number of Mapping Reads</th>
+<th align="left">Total Reads After Trimming/Number of Mapping Reads</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">NC_025175.1</td>
+<td align="left">277167</td>
+<td align="left">82.84%</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">NC_025138.1</td>
+<td align="left">33724</td>
+<td align="left">10.08%</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">NC_025175.1</td>
+<td align="left">187823</td>
+<td align="left">76.70%</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">NC_025138.1</td>
+<td align="left">22006</td>
+<td align="left">8.99%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="number-of-mapping-reads-with-best-candidates" class="section level2">
+<h2>Number of Mapping Reads with Best Candidates</h2>
+<p>After choosing the best candidate, we want see the depth of coverage for each position.</p>
+<div class="figure">
+<img src="../_static/depth.svg" alt="Depth of Coverage for Each Position" class="align-centeralign-center" />
+<p class="caption">Depth of Coverage for Each Position</p>
+</div>
+<p>In the below table, we introduced the exact positions that are not covered from our reads.</p>
+<table style="width:98%;">
+<colgroup>
+<col width="37%" />
+<col width="20%" />
+<col width="19%" />
+<col width="19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Library</th>
+<th align="left">Position Start</th>
+<th align="left">Position End</th>
+<th align="left">End-Start</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">8061</td>
+<td align="left">8417</td>
+<td align="left">356</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">87006</td>
+<td align="left">89274</td>
+<td align="left">2268</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">110447</td>
+<td align="left">111986</td>
+<td align="left">1539</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">132435</td>
+<td align="left">132485</td>
+<td align="left">50</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">132738</td>
+<td align="left">132968</td>
+<td align="left">230</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">147876</td>
+<td align="left">154647</td>
+<td align="left">6771</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">8062</td>
+<td align="left">8417</td>
+<td align="left">355</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">87006</td>
+<td align="left">89274</td>
+<td align="left">2268</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">110447</td>
+<td align="left">110885</td>
+<td align="left">438</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">110903</td>
+<td align="left">111987</td>
+<td align="left">1084</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">132738</td>
+<td align="left">132896</td>
+<td align="left">158</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">132922</td>
+<td align="left">132964</td>
+<td align="left">42</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">139942</td>
+<td align="left">139959</td>
+<td align="left">17</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">144620</td>
+<td align="left">144652</td>
+<td align="left">32</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">147876</td>
+<td align="left">154650</td>
+<td align="left">6774</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="positions-with-0-depth-for-nc_025175.1" class="section level2">
+<h2>Positions With 0 Depth For NC_025175.1</h2>
+<p>Also, some genes that are not covered by our reads. In the following table, you can see which genes that are not covered by our reads. The most significant genes are <em>Beta-lactamase</em> for both libraries. Because of this gene, bacterial organisms have shown resistance to the antibiotics. For library <em>Citrobacter freundii</em> (F20), <em>Mercuric resistance operon coregulator, MerD</em> gene is the most important one. This gene has shown resistance to the <em>Mercury</em> element (Hg). It can be useful for the bioremediation of contaminated environments.</p>
+<table style="width:98%;">
+<colgroup>
+<col width="29%" />
+<col width="8%" />
+<col width="16%" />
+<col width="44%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Library</th>
+<th align="left">Strand</th>
+<th align="left">Locus Tag</th>
+<th align="left">Product</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Both</td>
+<td align="left">(-)</td>
+<td align="left">D616_p149014</td>
+<td align="left">hypothetical protein</td>
+</tr>
+<tr class="even">
+<td align="left">Both</td>
+<td align="left">(+)</td>
+<td align="left">D616_p149136</td>
+<td align="left">IS629 transposase</td>
+</tr>
+<tr class="odd">
+<td align="left">Both</td>
+<td align="left">(+)</td>
+<td align="left">D616_p149137</td>
+<td align="left">Mobile element protein</td>
+</tr>
+<tr class="even">
+<td align="left">Both</td>
+<td align="left">(+)</td>
+<td align="left">D616_p149138</td>
+<td align="left">hypothetical protein</td>
+</tr>
+<tr class="odd">
+<td align="left">Both</td>
+<td align="left">(+)</td>
+<td align="left">D616_p149139</td>
+<td align="left">Retron-type RNA-directed DNA polymerase</td>
+</tr>
+<tr class="even">
+<td align="left">Both</td>
+<td align="left">(-)</td>
+<td align="left">D616_p149173</td>
+<td align="left">AroG</td>
+</tr>
+<tr class="odd">
+<td align="left">Both</td>
+<td align="left">(-)</td>
+<td align="left">D616_p149174</td>
+<td align="left">hypothetical protein</td>
+</tr>
+<tr class="even">
+<td align="left">Both</td>
+<td align="left">(-)</td>
+<td align="left">D616_p149207</td>
+<td align="left">hypothetical protein</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">(-)</td>
+<td align="left">D616_p149217</td>
+<td align="left">Relaxase /helicase</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">(+)</td>
+<td align="left">D616_p149224</td>
+<td align="left">Mercuric resistance operon coregulator, MerD</td>
+</tr>
+<tr class="odd">
+<td align="left">Both</td>
+<td align="left">(+)</td>
+<td align="left">D616_p149228</td>
+<td align="left">TniB NTP-binding protein</td>
+</tr>
+<tr class="even">
+<td align="left">Both</td>
+<td align="left">(+)</td>
+<td align="left">D616_p149229</td>
+<td align="left">hypothetical protein</td>
+</tr>
+<tr class="odd">
+<td align="left">Both</td>
+<td align="left">(-)</td>
+<td align="left">D616_p149230</td>
+<td align="left">macrolide 2-phosphotransferase, mph(B)</td>
+</tr>
+<tr class="even">
+<td align="left">Both</td>
+<td align="left">(-)</td>
+<td align="left">D616_p149231</td>
+<td align="left">hydrolase, alpha/beta fold family</td>
+</tr>
+<tr class="odd">
+<td align="left">Both</td>
+<td align="left">(-)</td>
+<td align="left">D616_p149232</td>
+<td align="left">Transcriptional regulator, TetR family</td>
+</tr>
+<tr class="even">
+<td align="left">Both</td>
+<td align="left">(-)</td>
+<td align="left">D616_p149233</td>
+<td align="left">hypothetical protein</td>
+</tr>
+<tr class="odd">
+<td align="left">Both</td>
+<td align="left">(-)</td>
+<td align="left">D616_p149234</td>
+<td align="left">Beta-lactamase</td>
+</tr>
+<tr class="even">
+<td align="left">Both</td>
+<td align="left">(+)</td>
+<td align="left">D616_p149235</td>
+<td align="left">hypothetical protein</td>
+</tr>
+<tr class="odd">
+<td align="left">Both</td>
+<td align="left">(-)</td>
+<td align="left">D616_p149236</td>
+<td align="left">GGDEF family protein</td>
+</tr>
+<tr class="even">
+<td align="left">Both</td>
+<td align="left">(+)</td>
+<td align="left">D616_p149237</td>
+<td align="left">TniB NTP-binding protein</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="genes-that-are-not-covered-from-our-reads" class="section level2">
+<h2>Genes That Are Not Covered From Our Reads</h2>
+<p>This figure contains the biggest contigs for <em>Escherichia coli</em> (F5) library that we get after the assembly process with SPAdes. The important deduction we make is that <em>Contig2</em> has insertion.</p>
+<div class="figure">
+<img src="../_static/F5-ACT.png" alt="Visualization of Contigs For Library F5" class="align-centeralign-center" />
+<p class="caption">Visualization of Contigs For Library F5</p>
+</div>
+<p>The figure below belongs to <em>Citrobacter freundii</em> (F20) library. The <em>Contig2, Contig3 and, Contig5</em> have the deletion.</p>
+<div class="figure">
+<img src="../_static/F20-ACT.png" alt="Visualization of Contigs For Library F20" class="align-centeralign-center" />
+<p class="caption">Visualization of Contigs For Library F20</p>
+</div>
+<p>We did the first assembly with <em>Phrap</em> and we used the only mapped reads with reference plasmid. After the assembly process, we get <em>545 contigs</em> for library <em>Escherichia coli</em> (F5) and <em>590 contigs</em> for library <em>Citrobacter freundii</em> (F20). After that, we decide to extend our contigs using the unmapped reads with reference plasmid. As a result, we get fewer contigs.</p>
+<table style="width:98%;">
+<colgroup>
+<col width="25%" />
+<col width="14%" />
+<col width="16%" />
+<col width="7%" />
+<col width="28%" />
+<col width="7%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Library</th>
+<th align="left">Assembly Tool</th>
+<th align="left">Number Of Contigs</th>
+<th align="left">N50</th>
+<th align="left">Number of Highly Similar Contigs</th>
+<th align="left">N50</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">Phrap</td>
+<td align="left">545</td>
+<td align="left">2318</td>
+<td align="left">520</td>
+<td align="left">2318</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">Phrap</td>
+<td align="left">590</td>
+<td align="left">2071</td>
+<td align="left">538</td>
+<td align="left">2071</td>
+</tr>
+<tr class="odd">
+<td align="left"><em>Escherichia coli</em> (F5)</td>
+<td align="left">SPAdes</td>
+<td align="left">3815</td>
+<td align="left">1028</td>
+<td align="left">13</td>
+<td align="left">86647</td>
+</tr>
+<tr class="even">
+<td align="left"><em>Citrobacter freundii</em> (F20)</td>
+<td align="left">SPAdes</td>
+<td align="left">3704</td>
+<td align="left">1040</td>
+<td align="left">25</td>
+<td align="left">15692</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="contigs-statistics-for-nc_025175.1" class="section level2">
+<h2>Contigs Statistics for NC_025175.1</h2>
+<p>After scaffolding contigs, we visualize the both libraries plasmid genome in <em>Artemis Comparasion Tool</em>.</p>
+<div class="figure">
+<img src="../_static/Escherichia_coli_F5.svg" alt="Escherichia coli (F5) Plasmid Genome" class="align-centeralign-center" />
+<p class="caption"><em>Escherichia coli</em> (F5) Plasmid Genome</p>
+</div>
+<div class="figure">
+<img src="../_static/Citrobacter_freundii_F20.svg" alt="Citrobacter freundii (F20) Plasmid Genome" class="align-centeralign-center" />
+<p class="caption"><em>Citrobacter freundii</em> (F20) Plasmid Genome</p>
+</div>
+</div>
+</div>
+</body>
+</html>
