@@ -1,0 +1,17 @@
+digraph {
+  node [shape="rect"];
+Reads -> Unmapped [label="  BWA"];
+Chromosomes -> Unmapped;
+Unmapped -> Contigs [label="  phrap"];
+Contigs -> Scaffold [label="  SPAdes"];
+Scaffold -> Ref_Plasmids [label=" BLAST"];
+RefSeq -> Ref_Plasmids;
+Ref_Plasmids -> dot_plot;
+dot_plot -> struct;
+struct -> solution;
+Scaffold -> solution;
+Ref_Plasmids [label="Reference Plasmids"];
+struct [label="Choose plasmid with\nsimilar structure"];
+solution [label="Proposed Structure"];
+dot_plot [label="Compare structure\nusing Dot Plot"];
+}
