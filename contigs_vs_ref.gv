@@ -1,0 +1,26 @@
+digraph {
+  rankdir="LR";
+  label = "Aligned to E. coli J53/pNIT-HK plasmid";
+C6 [shape="larrow"];
+C2 [shape="larrow"];
+C5 [shape="rarrow"];
+C6_b [shape="larrow", label="C6"];
+C4 [shape="rarrow"];
+C6_c [shape="larrow", label="C6"];
+C1 [shape="larrow"];
+C6_d [shape="larrow", label="C6"];
+C3 [shape="rarrow"];
+
+C6 -> C2;
+C2 -> C5;
+C5 -> C6_b;
+C6_b -> C4;
+C4 -> C6_c;
+C6_c -> C1;
+C1 -> C6_d;
+C6_d -> C3 -> C6;
+{rank='same'; C2; C3}
+{rank='same'; C5; C6_d}
+{rank='same'; C6_b; C1}
+{rank='same'; C4; C6_c}
+}
